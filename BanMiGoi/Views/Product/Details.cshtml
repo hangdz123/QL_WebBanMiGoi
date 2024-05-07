@@ -1,0 +1,533 @@
+﻿@model ThanhThoaiRestaurant.Models.MonAn
+
+@{
+    ViewBag.Title = "Thực đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<style>
+
+	.view-all-reviews {
+		color: #b15e6c; /* Màu chữ mặc định */
+		text-decoration: none; /* Loại bỏ gạch chân */
+		transition: color 0.3s; /* Hiệu ứng chuyển đổi màu trong 0.3 giây */
+		font-size: 18px;
+		font-weight: bold;
+		margin-left: 120px;
+	}
+
+		.view-all-reviews:hover {
+			color: #D10024; /* Màu chữ khi hover */
+		}
+
+
+	.input-images,
+	.input-video {
+		margin-bottom: 20px;
+	}
+
+		.input-images label,
+		.input-video label {
+			display: block;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}		
+		.input-images .custom-file-input,
+		.input-video .custom-file-input {
+			display: inline-block;
+			padding: 8px 12px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+
+			.input-images .custom-file-input:hover,
+			.input-video .custom-file-input:hover {
+				background-color: #45a049;
+			}
+
+		/* Định dạng tên tệp đã chọn */
+		.input-images .file-name,
+		.input-video .file-name {
+			display: inline-block;
+			margin-left: 10px;
+		}
+
+		/* Hiển thị tên tệp đã chọn */
+		.input-images input[type="file"]:focus + .custom-file-input,
+		.input-video input[type="file"]:focus + .custom-file-input {
+			background-color: #45a049;
+		}
+
+		/* Đổi màu khi có tệp được chọn */
+		.input-images input[type="file"]:valid + .custom-file-input,
+		.input-video input[type="file"]:valid + .custom-file-input {
+			background-color: #45a049;
+		}
+
+	.btn.btn-black {
+		background: #fb6e2e;
+		border: 1px solid #fb6e2e;
+		color: #fff;
+	}
+
+		.btn.btn-black:hover {
+			background: #bf3c00;
+			border: 1px solid #bf3c00;
+			color: #fff;
+		}
+
+	.product-details .product-rating > i.fa-star {
+		color: #FFC107;
+	}
+    /* Thay đổi màu sắc của ngôi sao khi được chọn */
+    .rating input:checked + label:before {
+        content: '\2605'; /* Ký tự sao ★ */
+        color: gold;
+    }
+
+    /* Thiết lập màu sắc mặc định của ngôi sao */
+    .rating label:before {
+        content: '\2606'; /* Ký tự sao trống ☆ */
+        color: #ccc;
+        
+    }
+
+
+
+.sale-badge {
+    position: absolute;
+    top: -10px; /* Điều chỉnh khoảng cách từ trên xuống */
+    left: -10px; /* Điều chỉnh khoảng cách từ trái sang phải */
+    background-color: #f5d010;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 50%; /* Tạo hình vòng tròn */
+    font-weight: bold;
+    font-size: 30px;
+}
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .price {
+        font-size: 20px;
+        display: inline-block;
+        margin-top: 0;
+        color: yellow;
+        text-decoration: none;
+    }
+
+
+    span.woocommerce-Price-currencySymbol {
+        text-decoration: none; /* Xoá gạch chân cho currencySymbol */
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-button {
+        background-color: #f5d010;
+        color: #000;
+        border: none;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .quantity-input {
+        color: black;
+        width: 50px;
+        height: 30px;
+        text-align: center;
+    }
+
+    .add-to-cart-button {
+        width: 150px;
+        background-color: #f5d010;
+        color: #000;
+        margin-left: 10px;
+
+    }
+
+    .active-tab {
+        display: block !important;
+    }
+
+    .inactive-tab {
+        display: none !important;
+    }
+
+    .tab-wrapper {
+        display: flex;      
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .tab-item {
+        text-align: center;
+        padding: 10px 15px; /* Tăng khoảng cách bên trong khung */
+        background-color: #f5f5f5;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        transition: background-color 0.3s;
+        color: #515151;
+        font-size: 16px; /* Giảm kích thước chữ */
+        margin: 20px 5px; /* Tạo khoảng cách giữa các tab */
+        white-space: nowrap; /* Ngăn các tab quá dài bị tràn xuống hàng mới */
+    }
+
+        .tab-item:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+
+    .rating {
+        display: inline-block;
+    }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+            font-size: 24px;
+            padding: 5px;
+        }
+
+    .rating {
+        display: inline-block;
+    }
+
+    .star {
+        font-size: 24px;
+        cursor: pointer;
+        color: #ccc;
+        transition: color 0.3s;
+    }
+
+        .star:hover,
+        .star.active {
+            color: gold; /* Màu khi hover hoặc đã chọn */
+        }
+
+
+
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLR+raQ9FfF9c+6vBrt2UZgq4x6cF5C5f5Ar5g5B/v8" crossorigin="anonymous">
+
+<!-- SECTION -->
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<!-- Product main img -->
+			<div class="col-md-5 col-md-push-2">
+				<div id="product-main-img">
+					<div class="product-preview">
+						<img src="~/new1/img/@Model.HinhAnh" alt="">
+					</div>
+
+					<div class="product-preview">
+						<img src="~/new1/img/@Model.HinhAnh1" alt="">
+					</div>
+					<div class="product-preview">
+						<img src="~/new1/img/@Model.HinhAnh2" alt="">
+					</div>
+					<div class="product-preview">
+						<img src="~/new1/img/@Model.HinhAnh3" alt="">
+					</div>
+				</div>
+			</div>
+			<!-- /Product main img -->
+			<!-- Product thumb imgs -->
+			<div class="col-md-2  col-md-pull-5">
+				<div id="product-imgs">
+					<div class="product-preview">
+						<img src="~/new1/img/@Model.HinhAnh" alt="">
+					</div>
+
+					<div class="product-preview">
+						<img src="~/new1/img/@Model.HinhAnh1" alt="">
+					</div>
+					<div class="product-preview">
+						<img src="~/new1/img/@Model.HinhAnh2" alt="">
+					</div>
+					<div class="product-preview">
+						<img src="~/new1/img/@Model.HinhAnh3" alt="">
+					</div>
+				</div>
+			</div>
+			<!-- /Product thumb imgs -->
+			<!-- Product details -->
+			<div class="col-md-5">
+				<div class="product-details">
+					<h2 class="product-name">@Model.TenMon</h2>
+					<div>
+						<div class="product-rating">
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star-o"></i>
+						</div>
+						<a class="review-link" href="#">10 đánh giá | @Model.SoLuongDaBan đã bán</a>
+					</div>
+					<div>
+						@if (Model.GiaBan > Model.GiaKhuyenMai)
+						{
+							<h4 class="product-price">@Model.GiaKhuyenMai.ToString("N0")VNĐ<del class="product-old-price">@Model.GiaBan.ToString("N0")VNĐ</del></h4>
+						}
+						else
+						{
+							<h4 class="product-price">@Model.GiaBan.ToString("N0")VNĐ</h4>
+						}
+						@if (Model.SoLuong > 0)
+						{
+							<span class="product-available" style="color: #48be17">Còn hàng: @Model.SoLuong sản phẩm</span>
+						}
+						else
+						{
+							<span class="product-available">Hết hàng</span>
+						}
+					</div>
+					<p>@Model.MoTaNgan</p>
+					<form method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang">
+						<input type="hidden" name="maMon" value="@Model.MaMon" />
+					<div class="add-to-cart" style="display:flex;">
+							<div style="display: flex;">
+								<label class="input-group col-md-6 d-flex mb-3" for="soLuongMM" style="white-space: nowrap; margin-top: 15px;">Số lượng: </label>
+								<input type="number" name="soLuongMM" value="1" min="1" max="@Model.SoLuong" style="width: 50px; color: black; height:30px; margin: 10px 30px;" />
+							</div>
+							@if (Model.SoLuong > 0)
+							{
+
+								<input class="btn btn-black py-3 px-5" type="submit" value="Thêm vào giỏ hàng" style="margin: 5px 35px; font-weight:bold;" />
+							}
+							
+					</div>
+					</form>
+					<ul class="product-btns">
+						<li><a href="#"><i class="fa fa-heart-o"></i> Yêu thích</a></li>
+						
+					</ul>
+
+					<ul class="product-links">
+						<li>Loại sản phẩm:</li>
+						<li><a href="#">@Model.TenNhom</a></li>
+						
+					</ul>
+
+					<ul class="product-links">
+						<li>Chia sẻ:</li>
+						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+						<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+						<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+						<li><a href="#"><i class="fa fa-envelope"></i></a></li>
+					</ul>
+
+				</div>
+			</div>
+			<!-- /Product details -->
+			<!-- Product tab -->
+			<div class="col-md-12">
+				<div id="product-tab">
+					<!-- product tab nav -->
+					<ul class="tab-nav">
+						<li><a data-toggle="tab" href="#tab1" onclick="saveActiveTab('#tab1')">Đánh giá</a></li>
+						<li><a data-toggle="tab" href="#tab2" onclick="saveActiveTab('#tab2')">Mô tả</a></li>
+						<li><a data-toggle="tab" href="#tab3" onclick="saveActiveTab('#tab3')">Thông số</a></li>
+					</ul>
+					<!-- /product tab nav -->
+					<!-- product tab content -->
+					<div class="tab-content">
+						
+						<!-- tab3  -->
+						<div id="tab1" class="tab-pane fade in active">
+							<div class="row">
+								<!-- Rating -->
+								<div class="col-md-3">
+									<div id="rating">
+										
+										@await Component.InvokeAsync("RatingSummary", new { maMon = Model.MaMon })
+
+										
+									</div>
+								</div>
+								<!-- /Rating -->
+								<!-- Reviews -->
+								<div class="col-md-6">
+									<div id="reviews">
+										@await Component.InvokeAsync("DanhGia", new { maMon = Model.MaMon })
+
+										<div class="review-body">
+											<p>
+												<a href="@Url.Action("Index", "DanhGia", new { maMon = Model.MaMon })" class="view-all-reviews">Xem tất cả đánh giá...</a>
+											</p>
+										</div>
+										
+										
+									</div>
+									
+								</div>
+								<!-- /Reviews -->
+								<!-- Review Form -->
+								<div class="col-md-3">
+									<div id="review-form">
+										<form class="review-form" method="post" action="/Product/SubmitReview" enctype="multipart/form-data">
+											<input type="hidden" name="maMon" value="@Model.MaMon"> <!-- Pass the value of MaMon -->
+											<input type="hidden" id="rating" name="rating"> <!-- Hidden input to store rating value -->
+
+											<textarea class="input" name="content" placeholder="Viết đánh giá"></textarea>
+											<div class="input-rating">
+												<span>Đánh giá: </span>
+												<div class="stars">
+													<input id="star5" name="stars" value="5" type="radio" onclick="updateRating(5)"><label for="star5"></label>
+													<input id="star4" name="stars" value="4" type="radio" onclick="updateRating(4)"><label for="star4"></label>
+													<input id="star3" name="stars" value="3" type="radio" onclick="updateRating(3)"><label for="star3"></label>
+													<input id="star2" name="stars" value="2" type="radio" onclick="updateRating(2)"><label for="star2"></label>
+													<input id="star1" name="stars" value="1" type="radio" onclick="updateRating(1)"><label for="star1"></label>
+												</div>
+											</div>
+
+											<div class="input-images">
+												<label for="images">Tải lên tối đa 5 ảnh:</label>
+												<input type="file" id="image1" name="image1" accept="image/*">
+												<input type="file" id="image2" name="image2" accept="image/*">
+												<input type="file" id="image3" name="image3" accept="image/*">
+												<input type="file" id="image4" name="image4" accept="image/*">
+												<input type="file" id="image5" name="image5" accept="image/*">
+
+											</div>
+
+											<!-- Input for video -->
+											<div class="input-video">
+												<label for="video">Tải lên video (chỉ 1 video):</label>
+												<input type="file" id="video" name="Video" accept="video/*">
+											</div>
+
+											<button type="submit" class="primary-btn">Xác nhận</button> <!-- Change button type to submit -->
+										</form>
+
+									</div>
+								</div>
+
+								<script>
+									function updateRating(value) {
+										document.getElementById('rating').value = value; // Update the hidden input with the selected rating value
+									}
+								</script>
+
+								<!-- /Review Form -->
+							</div>
+						</div>
+						<!-- /tab3  -->
+						<!-- tab1  -->
+						<div id="tab2" class="tab-pane fade in">
+							<div class="row">
+								<div class="col-md-12">
+
+									<p>@Model.MoTaDai</p>
+								</div>
+							</div>
+						</div>
+						<!-- /tab1  -->
+						<!-- tab2  -->
+						<div id="tab3" class="tab-pane fade in">
+							<div class="row">
+								<div class="col-md-12">
+									<p></p>
+								</div>
+							</div>
+						</div>
+						<!-- /tab2  -->
+					</div>
+					<!-- /product tab content  -->
+				</div>
+			</div>
+			<!-- /product tab -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /SECTION -->
+<!-- NEWSLETTER -->
+<div id="newsletter" class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="newsletter">
+					<p>Đăng ký để nhận <strong>TIN TỨC MỚI NHẤT</strong></p>
+					<form>
+						<input class="input" type="email" placeholder="Nhập email của bạn">
+						<button class="newsletter-btn"><i class="fa fa-envelope"></i> Đăng ký</button>
+					</form>
+					<ul class="newsletter-follow">
+						<li>
+							<a href="#"><i class="fa fa-facebook"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-twitter"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-instagram"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-pinterest"></i></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /NEWSLETTER -->
+
+
+<script>
+	$(document).ready(function () {
+		$("#themVaoGioHang").click(function () {
+			var maMon = @Model.MaMon;
+			var tenMon = @Model.TenMon;
+			var hinhAnh = @Model.HinhAnh;// Lấy mã món từ biến Model
+			var soLuongMM = $("#soLuongMM").val(); // Lấy giá trị số lượng từ trường nhập
+
+			// Gửi mã món và số lượng lên hành động "ThemVaoGioHang" trong Controller
+			$.ajax({
+				url: "/GioHangController/ThemVaoGioHang?maMon=" + maMon + "&soLuongMM=" + soLuongMM + "&tenMon=" + tenMon + "&hinhAnh=" + hinhAnh,
+				type: "POST",
+				success: function (result) {
+					// Xử lý kết quả nếu cần
+					console.log(result);
+				}
+			});
+		});
+	});
+
+	
+
+	
+
+</script>
+
+
+
+
+

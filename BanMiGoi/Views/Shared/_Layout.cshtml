@@ -1,0 +1,406 @@
+﻿@using System.Text.Json;
+
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+
+
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="~/images/favicon.png" type="">
+
+    <title> Thế Giới Mì </title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <!-- nice select  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <!-- font awesome style -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+
+    <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/new/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="~/new/css/animate.css">
+
+    <link rel="stylesheet" href="~/new/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/new/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/new/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="~/new/css/aos.css">
+
+    <link rel="stylesheet" href="~/new/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="~/new/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="~/new/css/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="~/new/css/flaticon.css">
+    <link rel="stylesheet" href="~/new/css/icomoon.css">
+    <link rel="stylesheet" href="~/new/css/style.css">
+    <!--***************************************************************************-->
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="~/new1/css/bootstrap.min.css" />
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="~/new1/css/slick.css" />
+    <link type="text/css" rel="stylesheet" href="~/new1/css/slick-theme.css" />
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="~/new1/css/nouislider.min.css" />
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="~/new1/css/font-awesome.min.css">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="~/new1/css/style.css" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body>
+
+    <style>
+
+        a {
+            color: #D10024;
+            font-weight: 500;
+            -webkit-transition: 0.2s color;
+            transition: 0.2s color;
+        }
+
+        .active-nav-item {
+            background-color: orange; /* Thay đổi màu sắc tại đây */
+            color: #fff; /* Màu chữ khi mục được chọn */
+        }
+
+        .auth-link:hover {
+            color: orange; /* Màu khi hover vào liên kết đăng nhập, đăng xuất, đăng ký */
+        }
+
+        .menu-item .fa-shopping-cart {
+            font-size: 20px; /* Điều chỉnh kích thước của icon giỏ hàng */
+            vertical-align: middle; /* Để icon và số lượng nằm giữa cùng hàng */
+        }
+
+        .small-label {
+            vertical-align: top; /* Để số lượng nằm giữa cùng hàng với icon */
+            margin-left:0; /* Điều chỉnh khoảng cách giữa icon và số lượng */
+            font-size: 14px; /* Điều chỉnh kích thước của số lượng */
+        }
+
+
+
+    </style>
+
+    <header class="header_section" style="background-color: white;">
+       
+
+        <!-- TOP HEADER -->
+        <div id="top-header">
+            <div class="container">
+                <ul class="header-links pull-left">
+                    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("IsLoggedIn") == "true" && (HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "Admin" || HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "LeTan" || HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "ThuNgan"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link " href="/Admin">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home">Trang chủ <span class="sr-only">(current)</span></a>
+                        </li>
+
+                       
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Product">Mua sắm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/DonHang">Lịch sử mua hàng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Home/Chat">Chat <i style="font-size:20px; color: yellow;" class="fa fa-comments-o" aria-hidden="true"></i></a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home">Trang chủ <span class="sr-only">(current)</span></a>
+                        </li>
+
+                       
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Product">Mua sắm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/DonHang">Lịch sử mua hàng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Home/Chat">Chat <i style="font-size:20px; color: yellow;" 
+                                class="fa fa-comments-o" aria-hidden="true"></i></a>
+                        </li>
+
+                    }
+                </ul>
+                <script>
+                    // Lấy URL hiện tại
+                    var currentUrl = window.location.pathname;
+
+                    // Tìm mục menu tương ứng với URL hiện tại
+                    var currentNavItem = document.querySelector('ul.navbar-nav li.nav-item a[href="' + currentUrl + '"]');
+
+                    // Thêm lớp 'active' cho mục hiện tại
+                    if (currentNavItem) {
+                        currentNavItem.parentElement.classList.add('active');
+                    }
+
+                </script>
+
+                <div class=" header-links pull-right user_option" style="display: flex;">
+                    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+                    <aside id="text-2" class="widget widget_text">
+                        <div class="textwidget">
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("TenDangNhap") != null)
+                            {
+                                <p style="color: #fff;">Chào mừng, <a href="/Account/UpDateProfile" 
+                                    style="color:#c7b72e;"> @HttpContextAccessor.HttpContext.Session.GetString("TenDangNhap")! 
+                                    <i style="font-size:24px; color: #c7b72e;" class="fa fa-user" aria-hidden="true"></i></a></p>
+                                <a class="auth-link" href="@Url.Action("Logout", "Account")">Đăng xuất</a>
+                            }
+                            else
+                            {
+                                <div style="white-space: nowrap; width: 200px; color: #fff; margin-right: 50px;">
+                                    Chào mừng quý khách,
+                                    <a class="auth-link" href="Account/Login">Đăng nhập</a> | <a class="auth-link" href="Account/Register">Đăng ký</a>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="menu-item has-small-label cart-trigger">
+                            <a href="/GioHang" style="margin: 0">
+                                <i class="fa fa-shopping-cart" style=" color: #fff;"></i>
+                            </a>
+                            <span class="small-label">
+                                <span id="cart_total" style="color: #fff;">
+                                    @if (HttpContextAccessor.HttpContext.Session.GetString("GioHang") != null)
+                                    {
+                                        var gioHang = JsonSerializer.Deserialize<List<ChiTietGh>>(HttpContextAccessor.HttpContext.Session.GetString("GioHang"));
+                                        var soLuongMonAnTrongGioHang = gioHang.Select(item => item.MaMon).Distinct().Count();
+                                        @soLuongMonAnTrongGioHang
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #fff;">0</span>
+                                    }
+                                </span>
+                            </span>
+                        </div>
+                    </aside>
+
+                </div>
+
+            </div>
+        </div>
+
+                <!-- Modal hoặc cửa sổ chat -->
+                
+
+        <!-- /TOP HEADER -->
+        <!-- MAIN HEADER -->
+        <div id="header">
+            <!-- container -->
+            <div class="container">
+                <!-- row -->
+                <div class="row">
+                    <!-- LOGO -->
+                    <div class="col-md-3">
+                        <div class="header-logo">
+                            <a href="#" class="logo">
+                                <img src="./img/logo.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /LOGO -->
+                    <!-- SEARCH BAR -->
+                  
+                    <!-- /SEARCH BAR -->
+                    <!-- ACCOUNT -->
+                    <div class="col-md-3 clearfix">
+                        <div class="header-ctn">
+                            
+                          
+                            <!-- Menu Toogle -->
+                            
+                            <!-- /Menu Toogle -->
+                        </div>
+                    </div>
+                    <!-- /ACCOUNT -->
+                </div>
+                <!-- row -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- /MAIN HEADER -->
+    </header>
+        @RenderBody()
+
+    <!-- footer section -->
+    <!-- FOOTER -->
+    <footer id="footer">
+        <!-- top footer -->
+        <div class="section">
+            <!-- container -->
+            <div class="container">
+                <!-- row -->
+                <div class="row">
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Về chúng tôi</h3>
+                           
+                            <ul class="footer-links">
+                                <li><a href="#"><i class="fa fa-map-marker"></i>209 Nguyễn Thái Học</a></li>
+                                <li><a href="#"><i class="fa fa-phone"></i>0945 497 431</a></li>
+                                <li><a href="#"><i class="fa fa-envelope-o"></i>emperor2002fix@gmail.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Danh mục</h3>
+                            <ul class="footer-links">
+                                <li><a href="#">Omachi</a></li>
+                                <li><a href="#">Hảo Hảo</a></li>
+                                <li><a href="#">Cung Đình</a></li>
+                                <li><a href="#">Kokomi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="clearfix visible-xs"></div>
+
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Thông tin</h3>
+                            <ul class="footer-links">
+                               
+                                <li><a href="#">Liên hệ</a></li>
+                                <li><a href="#">Chính sách bảo mật</a></li>
+                                <li><a href="#">Đặt và đổi hàng</a></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Dịch vụ</h3>
+                            <ul class="footer-links">
+                                <li><a href="#">Tài khoản</a></li>
+                                <li><a href="#">Giỏ hàng</a></li>
+                                <li><a href="#">Yêu thích</a></li>
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Giúp đỡ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+        </div>
+        <!-- /top footer -->
+        
+    </footer>
+    <!-- /FOOTER -->
+    <!-- footer section -->
+    <!-- jQery -->
+   
+    <!-- popper js -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <!-- bootstrap js -->
+    <script src="~/js/bootstrap.js"></script>
+    <!-- owl slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+    </script>
+    <!-- isotope js -->
+    <script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+    <!-- nice select -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <!-- custom js -->
+    <script src="~/js/custom.js"></script>
+   
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.6/js/bootstrap-modalmanager.min.js" ></script>
+
+    <script src="~/new/js/jquery.min.js"></script>
+    <script src="~/new/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/new/js/popper.min.js"></script>
+    <script src="~/new/js/bootstrap.min.js"></script>
+    <script src="~/new/js/jquery.easing.1.3.js"></script>
+    <script src="~/new/js/jquery.waypoints.min.js"></script>
+    <script src="~/new/js/jquery.stellar.min.js"></script>
+    <script src="~/new/js/owl.carousel.min.js"></script>
+    <script src="~/new/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/new/js/aos.js"></script>
+    <script src="~/new/js/jquery.animateNumber.min.js"></script>
+    <script src="~/new/js/bootstrap-datepicker.js"></script>
+    <script src="~/new/js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="~/new/js/google-map.js"></script>
+    <script src="~/new/js/main.js"></script>
+
+    <!--****************************************-->
+    <script src="~/new1/js/jquery.min.js"></script>
+    <script src="~/new1/js/bootstrap.min.js"></script>
+    <script src="~/new1/js/slick.min.js"></script>
+    <script src="~/new1/js/nouislider.min.js"></script>
+    <script src="~/new1/js/jquery.zoom.min.js"></script>
+    <script src="~/new1/js/main.js"></script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger intent="WELCOME"
+                  chat-title="ThanhThoaiLapTop"
+                  agent-id="bd0e3f89-2461-4461-b802-e3f7714485e7"
+                  language-code="vi"></df-messenger>
+</body>
+</html>

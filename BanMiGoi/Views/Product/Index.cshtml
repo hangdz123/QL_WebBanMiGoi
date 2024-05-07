@@ -1,0 +1,789 @@
+﻿@using ThanhThoaiRestaurant.Models;
+@model ProductListViewModel
+
+@{
+    ViewBag.Title = "Thực đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<style>
+
+   
+
+    .input-checkbox input[type="checkbox"] + label span:after {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: 1px;
+        font-size: 10px;
+        color: #FFF;
+        opacity: 0;
+        -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+        -webkit-transition: all 0.2s;
+        transition: all 0.2s;
+    }
+
+    .header-search form .search-btn {
+        height: 40px;
+        width: 200px;
+        background: #D10024;
+        color: #FFF;
+        font-weight: 700;
+        border: none;
+        border-radius: 0px 40px 40px 0px;
+    }
+
+
+    .pagination {
+        --bs-pagination-padding-x: 0.75rem;
+        --bs-pagination-padding-y: 0.375rem;
+        --bs-pagination-font-size: 1rem;
+        --bs-pagination-color: var(--bs-link-color);
+        --bs-pagination-bg: var(--bs-body-bg);
+        --bs-pagination-border-width: var(--bs-border-width);
+        --bs-pagination-border-color: var(--bs-border-color);
+        --bs-pagination-border-radius: var(--bs-border-radius);
+        --bs-pagination-hover-color: var(--bs-link-hover-color);
+        --bs-pagination-hover-bg: var(--bs-tertiary-bg);
+        --bs-pagination-hover-border-color: var(--bs-border-color);
+        --bs-pagination-focus-color: var(--bs-link-hover-color);
+        --bs-pagination-focus-bg: var(--bs-secondary-bg);
+        --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        --bs-pagination-active-color: #fff;
+        --bs-pagination-active-bg: #0d6efd;
+        --bs-pagination-active-border-color: #0d6efd;
+        --bs-pagination-disabled-color: var(--bs-secondary-color);
+        --bs-pagination-disabled-bg: var(--bs-secondary-bg);
+        --bs-pagination-disabled-border-color: var(--bs-border-color);
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .header-search form .input {
+        width: 500px;
+        margin-right: -4px;
+    }
+    /* CSS cho container */
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .form-control1 {
+        background: #efefef !important;
+        color: #000000 !important;
+        font-size: 18px;
+        border-radius: 0px;
+        box-shadow: none !important;
+        height: 30px;
+    }
+    /* CSS cho woocommerce-ordering và woocommerce_product_search-2 */
+    .woocommerce-ordering,
+    .woocommerce-product-search {
+        flex: 1;
+        margin-right: 10px; /* Khoảng cách giữa hai phần tử */
+    }
+
+        /* CSS cho nút Search */
+        .woocommerce-product-search button {
+            background-color: #0073e6;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+        }
+
+    #woocommerce_price_filter-2 {
+        text-align: center; /* Căn giữa nội dung trong khối */
+        margin-top: 20px; /* Khoảng cách từ khối trước đó */
+    }
+
+    .quantityRed {
+        color: red;
+    }
+
+    .quantityGreen {
+        color: green;
+    }
+
+    /* Hiệu ứng chuyển trang */
+    .pagination {
+       
+        margin-top: 20px;
+        margin-left: 40px;
+
+    }
+
+    .page-numbers {
+        display: inline-block;
+        margin: 0 5px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+        .page-numbers.current {
+            background-color: yellow; /* Màu nền vàng cho số trang hiện tại */
+            color: #333; /* Màu chữ mặc định cho số trang hiện tại */
+        }
+
+    #gallery-filter {
+        display: flex;
+        flex-direction: column;
+    }
+
+        #gallery-filter li {
+            margin-bottom: 5px; /* Điều này đảm bảo mỗi mục li nằm trên một hàng */
+        }
+
+
+    .shop-sidebar-wrap {
+        position: sticky;
+        width: 100px;
+        height: 100%;
+        margin-right: 700px;
+    }
+
+    /* CSS cho "outer-container" */
+    .outer-container {
+        border: 2px solid #ccc; /* Đổi màu và kiểu đường viền theo nhu cầu */
+        padding: 20px; /* Đổi kích thước padding theo nhu cầu */
+        text-align: center; /* Để nội dung ở giữa khung */
+        margin-top: 100px;
+    }
+
+
+    #main {
+        overflow: hidden; /* Ngăn nội dung tràn ra ngoài */
+    }
+
+    #page-default {
+        overflow: hidden;
+    }
+
+
+    .filter-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .select-label {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+        .select-label:last-child {
+            margin-right: 0;
+        }
+
+    .search-container {
+        flex: 2;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Add any additional styling you need for the form elements */
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        width: 150px;
+    }
+
+    .dropdown-content {
+        display: none;
+        background-color: #de6767;
+        min-width: 160px;
+        border: 2px solid #fff;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+        margin-left: 100px;
+    }
+
+        .dropdown-content label {
+            display: block;
+            padding: 10px;
+            color: black;
+        }
+         
+    .quantity {
+        display: none;
+    }
+
+    .filter-container {
+        display: flex;
+        justify-content: space-between; /* Các nút sẽ nằm ngang hàng nhau */
+        align-items: center; /* Căn giữa theo chiều dọc */
+    }
+
+    .range-info {
+        font-size: 13px;
+        color: red;
+        text-align: center;
+    }
+
+
+</style>
+
+
+
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- ASIDE -->
+
+            <div id="aside" class="col-md-3">
+                <form id="category-filtered-form">
+               <!--Hang-->
+                <div class="aside">
+                    <h3 class="aside-title">Hãng</h3>
+                    <div class="checkbox-filter">
+
+                            <div class="input-checkbox">
+                                <input type="checkbox" val="all" id="category-all">
+                                <label for="category-all">
+                                    <span></span>
+                                    TẤT CẢ
+                                    
+                                </label>
+                            </div>
+
+                        <div class="input-checkbox">
+                            <input type="checkbox" val="DELL" id="category-1">
+                            <label for="category-1">
+                                <span></span>
+                                Omachi
+                                <small></small>
+                            </label>
+                        </div>
+
+                        <div class="input-checkbox">
+                                <input type="checkbox" val="HP" id="category-2">
+                            <label for="category-2">
+                                <span></span>
+                                Kokomi
+                                <small></small>
+                            </label>
+                        </div>
+
+                        <div class="input-checkbox">
+                                <input type="checkbox" val="MACBOOK" id="category-3">
+                            <label for="category-3">
+                                <span></span>
+                                Hảo Hảo
+                                <small></small>
+                            </label>
+                        </div>
+
+                        <div class="input-checkbox">
+                                <input type="checkbox" val="ACER" id="category-4">
+                            <label for="category-4">
+                                <span></span>
+                               Cung Đình
+                                <small></small>
+                            </label>
+                        </div>
+
+                        <div class="input-checkbox">
+                                <input type="checkbox" val="LENOVO" id="category-5">
+                            <label for="category-5">
+                                <span></span>
+                                Mì Cay Hàn
+                                <small></small>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                </form>
+                <form id="hardware-filtered-form">
+               
+                <!--Loại-->
+                <div class="aside">
+                    <h3 class="aside-title">loại</h3>
+                    <div class="checkbox-filter">
+
+                            <div class="input-checkbox">
+                                <input type="checkbox" val="all" id="cpu-all">
+                                <label for="cpu-all">
+                                    <span></span>
+                                    Tất cả
+
+                                </label>
+                            </div>
+
+                        <div class="input-checkbox">
+                                <input type="checkbox" val="Corei3" id="cpu-1">
+                            <label for="cpu-1">
+                                <span></span>
+                                Mì Thường
+
+                            </label>
+                        </div>
+
+                        <div class="input-checkbox">
+                                <input type="checkbox" val="Corei5" id="cpu-2">
+                            <label for="cpu-2">
+                                <span></span>
+                                Mì Trộn
+
+                            </label>
+                        </div>
+
+                        <div class="input-checkbox">
+                                <input type="checkbox" val="Corei7" id="cpu-3">
+                            <label for="cpu-3">
+                                <span></span>
+                                Lẩu Tự Sôi
+
+                            </label>
+                        </div>
+
+                        
+                    </div>
+                </div>
+                </form>
+                <form id="screen-filtered-form">
+
+
+                
+
+                </form>
+
+                <div class="col-md-3">
+                    <div class="header-search">
+                       
+                            <button id="btn-filter" class="search-btn">Lọc</button>
+                        
+                    </div>
+                </div>
+
+                
+
+                @* <div class="aside" style="margin-top: 80px;">
+                    @await Component.InvokeAsync("TopSanPham")
+                </div> *@
+                <!-- aside Widget -->
+               
+                <!-- /aside Widget -->
+            </div>
+            <!-- /ASIDE -->
+            <!-- STORE -->
+            <div id="store" class="col-md-9">
+                <!-- store top filter -->
+                <div class="store-filter clearfix" style="display: flex;">
+                    <div class="store-sort" >
+                        <label style="margin-top: 15px;">
+                            Sắp xếp:
+                            <select class="input-select">
+                                <option value="0">Bán chạy</option>
+                                <option value="1">Giá từ thấp đến cao</option>
+                                <option value="1">Giá từ cao xuống thấp</option>
+                            </select>
+                        </label>
+
+                       
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="header-search">
+                            <form asp-action="Search" asp-controller="Product" style="display:flex;">
+                                
+                                <input name="keywords" class="input" placeholder="Từ khoá">
+                                <button type="submit" class="search-btn">Tìm kiếm</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- /store top filter -->
+                <!-- store products -->
+                <div class="row" id="filter-product">
+                     @foreach (var menuItem in Model.MonAns) {
+                    <!-- product -->
+                    <div class="col-md-4 col-xs-6">
+                        <div class="product">
+                            <div class="product-img">
+                                    <img src="~/new1/img/@menuItem.HinhAnh" alt="">
+                                    @{
+                                        DateTime ngayHienTai = DateTime.Now;
+                                    }
+                                    
+                                        <div class="product-label">
+                                        @if (menuItem.NgayMoBan <= ngayHienTai && (ngayHienTai - menuItem.NgayMoBan).TotalDays <= 7)
+                                        {
+                                            <span class="new">NEW</span>
+                                        }
+                                        @if (menuItem.GiaBan > menuItem.GiaKhuyenMai)
+                                        {
+                                            <span class="sale">SALE</span>
+                                        }
+                                    </div>
+                                    
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category">@menuItem.TenNhom</p>
+                                <h3 class="product-name"><a href="#">@menuItem.TenMon</a></h3>
+                                    @if (menuItem.GiaBan > menuItem.GiaKhuyenMai)
+                                    {
+                                        <h4 class="product-price">@menuItem.GiaKhuyenMai.ToString("N0")VNĐ<del class="product-old-price">@menuItem.GiaBan.ToString("N0")VNĐ</del></h4>
+                                    }
+                                    else
+                                    {
+                                        <h4 class="product-price">@menuItem.GiaBan.ToString("N0")VNĐ</h4>
+                                    }
+                                <div class="product-rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product-btns">
+                                    <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">Yêu thích</span></button>
+                                    
+                                        <button class="quick-view" onclick="redirectToDetails(@menuItem.MaMon)">
+                                            <i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span>
+                                        </button>
+                                </div>
+                            </div>
+                            <div class="add-to-cart">
+                                    
+                               
+                                   
+                            </div>
+
+                                <div class="add-to-cart">
+                                    <button class="add-to-cart-btn" onclick="addToCart(@menuItem.MaMon)">
+                                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                                    </button>
+                                </div>
+
+                        </div>
+                    </div>
+                    <!-- /product -->
+                    }
+                </div>
+                <!-- /store products -->
+                <!-- store bottom filter -->
+               
+                    <!-- Hiển thị thông tin phân trang -->
+
+                <div id="existing-paging-info" class="paging-info" style="font-size: 13px; color: red; text-align: center;">
+                        Hiển thị từ sản phẩm thứ @ViewBag.StartItem đến @ViewBag.EndItem trên tổng số @ViewBag.TotalItems sản phẩm
+                    </div>
+
+                <nav class="navigation paging-navigation clearfix d-flex justify-content-center" style="white-space: nowrap;">
+                    <div class="col-sm-12 col-md-7 d-flex justify-content-center">
+                        <div class="dataTables_paginate paging_simple_numbers" id="data-table-5_paginate">
+                            <div class="text-center">
+                                <ul class="pagination">
+
+                                    <li class="page-item">
+                                        <a class="page-link"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                                    </li>
+
+                                    @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                                            <a class="page-link" href="/Product/Index?productPage=@i">@i</a>
+                                        </li>
+                                    }
+
+                                    <li class="page-item">
+                                        <a class="page-link"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+               
+                    <!-- Hiển thị thông tin phân trang -->
+                <div id="existing-page-number-info"  class="paging-info" style="font-size: 13px; color: red; text-align: center;">
+                        Trang @ViewBag.PageNumber/@ViewBag.TotalPages
+                    </div>
+                
+                <!-- /store bottom filter -->
+            </div>
+            <!-- /STORE -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+<!-- NEWSLETTER -->
+<div id="newsletter" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="newsletter">
+                    <p>Đăng ký để nhận <strong>TIN TỨC MỚI NHẤT</strong></p>
+                    <form>
+                        <input class="input" type="email" placeholder="Nhập email của bạn">
+                        <button class="newsletter-btn"><i class="fa fa-envelope"></i> Đăng ký</button>
+                    </form>
+                    <ul class="newsletter-follow">
+                        <li>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /NEWSLETTER -->
+
+ <script>
+        function redirectToDetails(id) {
+            // Chuyển hướng đến trang chi tiết với id của món ăn
+            window.location.href = "/Product/Details/" + id;
+        }
+
+
+        function addToCart(maMon) {
+
+            
+            // Gửi yêu cầu thêm món ăn vào giỏ hàng
+            $.ajax({
+                type: "POST",
+                url: "/GioHang/ThemVaoGioHang",
+                data: { maMon: maMon, soLuongMM: 1 },
+                success: function (data) {
+                    if (data.success) {
+
+                    } else {
+                        location.reload()
+                    }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi thêm món ăn vào giỏ hàng.");
+                }
+            });
+
+        }
+
+    document.getElementById("btn-filter").addEventListener("click", function () {
+        event.preventDefault();
+        console.log("Button clicked");
+
+        // Declare and initialize the data variable
+        var category = getSeclectCheckboxs("category-filtered-form");
+        var hardware = getSeclectCheckboxs("hardware-filtered-form");
+        var ram = getSeclectCheckboxs("ram-filtered-form");
+        var cpu = getSeclectCheckboxs("cpu-filtered-form");
+        var screen = getSeclectCheckboxs("screen-filtered-form");
+        var priceRange = getSeclectCheckboxs("price-filtered-form");
+
+        var data = {
+            Category: category,
+            Hardware: hardware,
+            Ram: ram,
+            Cpu: cpu,
+            Screen: screen,
+            PriceRange: priceRange
+        };
+
+        fetch("/Product/GetFilterProducts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then(function (response) {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error("Sai rồi !!!");
+            }
+        }).then(function (results) {
+            $("#filter-product").html(results);
+
+            // Calculate pagination details
+            var TotalItems = document.querySelectorAll(".col-md-4");
+            var PageSize = 9;
+            var TotalPage = Math.ceil(TotalItems.length / PageSize);
+            var PageNumber;
+            // Create pagination elements
+            const nav = document.createElement("nav");
+            nav.classList.add("navigation", "paging-navigation", "clearfix", "d-flex", "justify-content-center", "paging-info", "mx-auto");
+            const div = document.createElement("div");
+            div.classList.add("col-sm-12", "col-md-12", "d-flex", "justify-content-center", "mx-auto");
+            const paginateDiv = document.createElement("div");
+            paginateDiv.classList.add("dataTables_paginate", "paging_simple_numbers");
+            const textCenterDiv = document.createElement("div");
+            textCenterDiv.classList.add("text-center");
+            const ul = document.createElement("ul");
+            ul.classList.add("pagination", "paging-info");
+            
+
+            // Add pagination links
+            for (var i = 1; i <= TotalPage; i++) {
+                var li = document.createElement("li");
+                li.classList.add("page-item");
+                var a = document.createElement("a");
+                a.classList.add("page-link");
+                a.setAttribute("href", "/Product/Index?productPage=" + i );
+                a.textContent = i;
+                a.addEventListener('click', handlePageLinkClick)
+                li.appendChild(a);
+                ul.appendChild(li);
+                PageNumber = i;
+            }
+
+
+            var liPrevious = document.createElement("li");
+            liPrevious.classList.add("page-item");
+            var aPrevious = document.createElement("a");
+            aPrevious.classList.add("page-link");
+            aPrevious.setAttribute("href", "/Product/Index?productPage=" + 1);
+            aPrevious.innerHTML = '<i class="fa fa-arrow-left" aria-hidden="true"></i>';
+            aPrevious.addEventListener('click', handlePageLinkClick);
+            liPrevious.appendChild(aPrevious);
+            ul.insertBefore(liPrevious, ul.firstChild); // Insert at the beginning
+
+            // Add "next" button
+            var liNext = document.createElement("li");
+            liNext.classList.add("page-item");
+            var aNext = document.createElement("a");
+            aNext.classList.add("page-link");
+            aNext.setAttribute("href", "/Product/Index?productPage=" + TotalPage);
+            aNext.innerHTML = '<i class="fa fa-arrow-right" aria-hidden="true"></i>';
+            aNext.addEventListener('click', handlePageLinkClick);
+            liNext.appendChild(aNext);
+            ul.appendChild(liNext);
+
+            // Append pagination elements to the existing HTML structure
+            textCenterDiv.appendChild(ul);
+            paginateDiv.appendChild(textCenterDiv);
+            div.appendChild(paginateDiv);
+            nav.appendChild(div);
+
+            // Clear any existing pagination elements
+            var existingNav = document.querySelector(".paging-navigation");
+            if (existingNav) {
+                existingNav.parentNode.removeChild(existingNav);
+            }
+
+            // Append new pagination elements to the existing HTML structure
+            document.getElementById("store").appendChild(nav);
+            nav.style.textAlign= "center";
+            ShowPage(1);
+
+            var startItem = 1;
+            var endItem = Math.min(PageSize, TotalItems.length);
+            var rangeInfo = document.createElement("div");
+            rangeInfo.classList.add("paging-info", "range-info");
+            rangeInfo.textContent = "Hiển thị từ sản phẩm thứ " + startItem + " đến " + endItem + " trên tổng số " + TotalItems.length + " sản phẩm";
+            textCenterDiv.insertBefore(rangeInfo, ul);
+
+
+            var additionalPagingInfo = document.createElement("div");
+            additionalPagingInfo.classList.add("paging-info");
+            additionalPagingInfo.style.fontSize = "13px";
+            additionalPagingInfo.style.color = "red";
+            additionalPagingInfo.style.textAlign = "center";
+            additionalPagingInfo.textContent = "Trang" + PageNumber  + " / " + TotalPage ;
+            textCenterDiv.appendChild(additionalPagingInfo);
+            var existingPagingInfo = document.getElementById("existing-paging-info");
+            if (existingPagingInfo) {
+                existingPagingInfo.style.display = "none";
+            }
+
+            var existingPageNumberInfo = document.getElementById("existing-page-number-info");
+            if (existingPageNumberInfo) {
+                existingPageNumberInfo.style.display = "none";
+            }
+        }).catch(function (error) {
+            console.log("Lỗi", error);
+        });
+    });
+
+        function handlePageLinkClick(event){
+        event.preventDefault();
+        var pageNumber;
+
+        if (event.target.classList.contains('fa-arrow-left')) {
+            // Clicked on "previous" button
+            pageNumber = 1;
+        } else if (event.target.classList.contains('fa-arrow-right')) {
+            // Clicked on "next" button
+            pageNumber = TotalPage;
+        } else {
+            // Clicked on a page number
+            pageNumber = parseInt(event.target.textContent);
+        }
+
+        ShowPage(pageNumber);
+        }
+
+        function ShowPage(pageNumber) {
+        var productItems =  document.querySelectorAll(".col-md-4");
+        var itemPerPage = 9;
+        var startIndex = (pageNumber-1)*itemPerPage;
+        var endIndex = startIndex + itemPerPage;
+
+        for (var i=0; i< productItems.length ; i++) {
+            if(i>= startIndex && i < endIndex) {
+                productItems[i].style.display = 'block';
+
+            } else {
+                productItems[i].style.display = 'none';
+            }
+        }
+        }
+        function getSeclectCheckboxs(formId) {
+       var checkboxes = $('#' + formId + ' input[type="checkbox"]:checked');
+        var values = []
+       checkboxes.each(function(){
+           values.push($(this).attr('val'))
+       }
+       ) 
+       return values;
+   }
+
+        function BuildFilterQueryString(data) {
+            var queryString = "";
+
+            // Check if data is defined and has values
+            if (data && Object.keys(data).length > 0) {
+                queryString += "&Category=" + encodeURIComponent(data.Category.join(","));
+                queryString += "&Hardware=" + encodeURIComponent(data.Hardware.join(","));
+                queryString += "&Ram=" + encodeURIComponent(data.Ram.join(","));
+                queryString += "&Cpu=" + encodeURIComponent(data.Cpu.join(","));
+                queryString += "&Screen=" + encodeURIComponent(data.Screen.join(","));
+                queryString += "&PriceRange=" + encodeURIComponent(data.PriceRange.join(","));
+            }
+
+            return queryString;
+        }
+
+    </script>

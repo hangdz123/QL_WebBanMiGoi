@@ -1,0 +1,420 @@
+﻿@model ThanhThoaiRestaurant.Models.MonAn
+
+@{
+    ViewBag.Title = "Chi tiết";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+<style>
+    label {
+        display: inline-block;
+        font-weight: bold;
+        font-size: 18px;
+
+
+    }
+
+    .centered-image {
+        display: block;
+        margin: 0 300px 40px 349px;
+        height: 250px;
+    }
+
+</style>
+
+<main id="main" class="main">
+<div class="row">
+        <div class="pagetitle">
+            <h1>Sản phẩm</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/Admin/AdminMenu">Quản lý sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Sửa thông tin</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+    <div class="col-xl-6 col-md-12">
+        <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h4 style="font-weight: bold; color: #df1d1b; font-weight: bold;">
+                        Sửa thông tin
+                    </h4>
+                    <div style="display: flex;">
+                    <img src="~/new1/img/@Model.HinhAnh" alt="First slide" style="max-width: 200px; max-height: 200px; margin: 50px 20px ;">
+                        <img src="~/new1/img/@Model.HinhAnh1" alt="First slide" style="max-width: 200px; max-height: 200px; margin: 50px 20px;">
+                        <img src="~/new1/img/@Model.HinhAnh2" alt="First slide" style="max-width: 200px; max-height: 200px; margin: 50px 20px;">
+                        <img src="~/new1/img/@Model.HinhAnh3" alt="First slide" style="max-width: 200px; max-height: 200px; margin: 50px 20px;">
+                    </div>
+                </div>
+
+
+                
+                   
+               
+            <div class="ms-panel-body">
+                   
+                    
+                   <form asp-controller="AdminMenu" asp-action="Edit" asp-route-id="@Model.MaMon" method="post" enctype="multipart/form-data">
+                        <div class="form-row" style="display:flex; justify-content: space-between;">
+                            <div class="col-md-8" style="margin-left: 100px;">
+                        <div class=" mb-3">
+                            <label for="validationCustom18">Tên sản phẩm</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="validationCustom18" name="TenMon" placeholder="Tên sản phẩm" require maxlength="50"  value="@Model.TenMon" >
+                                <div class="invalid-feedback">
+                                    Tên sản phẩm không được để trống, không quá 50 kí tự.
+                            </div>
+                        </div>
+                    </div>
+
+                        <script>
+                            document.getElementById("validationCustom18").addEventListener("input", function () {
+                                var tenMonInput = this.value;
+                                var errorElement = this.nextElementSibling.querySelector(".invalid-feedback");
+
+                                if (tenMonInput.trim() === "" || tenMonInput.length > 50 ) {
+                                    this.setCustomValidity("invalid");
+                                    errorElement.style.display = "block";
+                                } else {
+                                    this.setCustomValidity(""); // Xóa thông báo lỗi nếu không có lỗi
+                                    errorElement.style.display = "none";
+                                }
+                            });
+                        </script>
+                                <div class=" mb-3">
+                                    <label for="validationCustom18">Hãng sản xuất</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="validationCustom22" name="MaNhom" required="">
+                                        @if (ViewBag.NhomMonAnList != null)
+                                        {
+                                            @foreach (var nhomMonAn in ViewBag.NhomMonAnList as List<NhomMonAn>)
+                                            {
+                                                <option value="@nhomMonAn.MaNhom" data-tennhom="@nhomMonAn.TenNhom">@nhomMonAn.TenNhom</option>
+                                            }
+                                        }
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn một hãng sản xuất.
+                                    </div>
+                                </div>
+                                </div>
+
+                        <script>
+                            var selectElement = document.getElementById("validationCustom22");
+                            var maNhomInput = document.getElementById("MaNhom");
+                            var tenNhomInput = document.getElementById("TenNhom");
+
+                            var selectedMaNhom = @Model.MaNhom; // Lấy mã nhóm của món đang được chỉnh sửa
+                            var selectedTenNhom = "@Model.TenNhom"; // Lấy tên nhóm của món đang được chỉnh sửa
+
+                            for (var i = 0; i < selectElement.options.length; i++) {
+                                if (selectElement.options[i].value == selectedMaNhom) {
+                                    selectElement.options[i].selected = true;
+                                    updateHiddenInputs(selectElement.options[i]);
+                                    break;
+                                }
+                            }
+
+                            selectElement.addEventListener("change", function () {
+                                var selectedOption = selectElement.options[selectElement.selectedIndex];
+                                updateHiddenInputs(selectedOption);
+                            });
+
+                            function updateHiddenInputs(selectedOption) {
+                                var selectedMaNhom = selectedOption.value;
+                                var selectedTenNhom = selectedOption.text;
+
+                                maNhomInput.value = selectedMaNhom;
+                                tenNhomInput.value = selectedTenNhom;
+                            }
+                        </script>
+
+                        
+
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom224">Loại</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="validationCustom224" name="MaCPU" required="">
+                                            @if (ViewBag.CPUList != null)
+                                            {
+                                                @foreach (var nhomMonAn in ViewBag.CPUList as List<CPU>)
+                                                {
+                                                    <option value="@nhomMonAn.MaCPU">@nhomMonAn.TenLoaiCPU</option>
+                                                }
+                                            }
+                                        </select>
+
+                                        <div class="invalid-feedback">
+                                            Vui lòng chọn tên loại.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="TenLoaiCPU" name="TenLoaiCPU" value="@Model.CPU.TenLoaiCPU" />
+                                <input type="hidden" id="MaCPU" name="MaCPU" value="@Model.MaCPU" />
+
+                                <script>
+                                    var selectElement = document.getElementById("validationCustom224");
+                                    var maNhomInput = document.getElementById("MaCPU");
+                                    var tenNhomInput = document.getElementById("TenLoaiCPU");
+
+                                    var selectedMaCPU = @Model.MaCPU; // Lấy mã nhóm của món đang được chỉnh sửa
+                                    var selectedTenLoaiCPU = "@Model.CPU.TenLoaiCPU"; // Lấy tên nhóm của món đang được chỉnh sửa
+
+                                    for (var i = 0; i < selectElement.options.length; i++) {
+                                        if (selectElement.options[i].value == selectedMaCPU) {
+                                            selectElement.options[i].selected = true;
+                                            updateHiddenInputs(selectElement.options[i]);
+                                            break;
+                                        }
+                                    }
+
+                                    selectElement.addEventListener("change", function () {
+                                        var selectedOption = selectElement.options[selectElement.selectedIndex];
+                                        updateHiddenInputs(selectedOption);
+                                    });
+
+                                    function updateHiddenInputs(selectedOption) {
+                                        var selectedMaCPU = selectedOption.value;
+                                        var selectedTenLoaiCPU = selectedOption.text;
+
+                                        maNhomInput.value = selectedMaCPU;
+                                        tenNhomInput.value = selectedTenLoaiCPU;
+                                    }
+                                </script>
+
+
+                                <div class=" mb-3">
+
+                                    <div class="input-group">
+                                        <input type="hidden" class="form-control" id="validationCustom25" name="MaMon" placeholder="Mã món" required pattern="[0-9]{1,6}" value="@Model.MaMon">
+                                        <div class="invalid-feedback">
+                                            Mã món chỉ là số và độ dài không quá 6.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom26">Số Lượng</label>
+                                    <div class="input-group">
+                                        @if (Model.SoLuong == 0)
+                                        {
+                                            <input type="text" class="form-control" id="validationCustom26" name="SoLuong" placeholder="Số lượng" value="Hết hàng" required maxlength="10" style="color: red;">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" id="validationCustom26" name="SoLuong" placeholder="Số lượng" required maxlength="10" value="@Model.SoLuong">
+                                        }
+                                        <div class="invalid-feedback">
+                                            Số lượng phải là số, không quá 100, và không để trống.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("validationCustom26").addEventListener("input", function () {
+                                        var soLuongInput = this.value;
+                                        var errorElement = this.nextElementSibling.querySelector(".invalid-feedback");
+
+                                        if (soLuongInput < 0 || soLuongInput > 100 || soLuongInput.trim() === "") {
+                                            this.setCustomValidity("invalid");
+                                            errorElement.style.display = "block";
+                                        } else {
+                                            this.setCustomValidity(""); // Xóa thông báo lỗi nếu không có lỗi
+                                            errorElement.style.display = "none";
+                                        }
+                                    });
+                                </script>
+                        </div>
+                            <div class="col-md-8" style="margin-left: 200px;">
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom29">Hình ảnh </label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="hinhAnhInput" name="HinhAnhFile" accept="image/*" style="background-color: white">
+                                        <input type="hidden" class="form-control" id="validationCustom29" name="HinhAnh" placeholder="Hình ảnh" required="" value="@Model.HinhAnh">
+                                        <div class="invalid-feedback">
+                                            <!-- Thông báo lỗi (nếu cần) -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("hinhAnhInput").addEventListener("change", function (event) {
+                                        var input = event.target;
+                                        if (input.files.length > 0) {
+                                            var fileName = input.files[0].name;
+                                            document.getElementById("validationCustom29").value = fileName;
+                                        }
+                                    });
+                                </script>
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom29">Hình ảnh 1</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="hinhAnhInput1" name="HinhAnhFile1" accept="image/*" style="background-color: white">
+                                        <input type="hidden" class="form-control" id="validationCustom291" name="HinhAnh" placeholder="Hình ảnh" required="" value="@Model.HinhAnh1">
+                                        <div class="invalid-feedback">
+                                            <!-- Thông báo lỗi (nếu cần) -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("hinhAnhInput1").addEventListener("change", function (event) {
+                                        var input = event.target;
+                                        if (input.files.length > 0) {
+                                            var fileName = input.files[0].name;
+                                            document.getElementById("validationCustom291").value = fileName;
+                                        }
+                                    });
+                                </script>
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom29">Hình ảnh 2 </label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="hinhAnhInput2" name="HinhAnhFile2" accept="image/*" style="background-color: white">
+                                        <input type="hidden" class="form-control" id="validationCustom292" name="HinhAnh" placeholder="Hình ảnh" required="" value="@Model.HinhAnh2">
+                                        <div class="invalid-feedback">
+                                            <!-- Thông báo lỗi (nếu cần) -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("hinhAnhInput2").addEventListener("change", function (event) {
+                                        var input = event.target;
+                                        if (input.files.length > 0) {
+                                            var fileName = input.files[0].name;
+                                            document.getElementById("validationCustom292").value = fileName;
+                                        }
+                                    });
+                                </script>
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom29">Hình ảnh 3</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="hinhAnhInput" name="HinhAnhFile3" accept="image/*" style="background-color: white">
+                                        <input type="hidden" class="form-control" id="validationCustom293" name="HinhAnh" placeholder="Hình ảnh" required="" value="@Model.HinhAnh3">
+                                        <div class="invalid-feedback">
+                                            <!-- Thông báo lỗi (nếu cần) -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("hinhAnhInput3").addEventListener("change", function (event) {
+                                        var input = event.target;
+                                        if (input.files.length > 0) {
+                                            var fileName = input.files[0].name;
+                                            document.getElementById("validationCustom293").value = fileName;
+                                        }
+                                    });
+                                </script>
+                        
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom28">Giá bán (VNĐ)</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="validationCustom28" name="GiaBan" placeholder="Giá bán" required maxlength="9" value="@Model.GiaBan.ToString("N0")  ">
+                                        <div id="giaBanError" class="text-danger"></div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("validationCustom28").addEventListener("input", function () {
+                                        var giaBanInput = this.value;
+                                        var errorElement = document.getElementById("giaBanError");
+
+                                        if (!/^\d+$/.test(giaBanInput) || giaBanInput < 0 || giaBanInput > 100000000) {
+                                            errorElement.textContent = "Giá bán phải là số, từ 0 đến 100,000,000!";
+                                        } else {
+                                            errorElement.textContent = ""; // Xóa thông báo lỗi nếu không có lỗi
+                                        }
+                                    });
+                                </script>
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom281">Giá gốc (VNĐ)</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="validationCustom281" name="GiaGoc" placeholder="Giá gốc" required maxlength="9" value="@Model.GiaGoc.ToString("N0")  ">
+                                        <div id="giaGocError" class="text-danger"></div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("validationCustom281").addEventListener("input", function () {
+                                        var giaGocInput = this.value;
+                                        var errorElement = document.getElementById("giaGocError");
+
+                                        if (!/^\d+$/.test(giaGocInput) || giaGocInput < 0 || giaGocInput > 100000000) {
+                                            errorElement.textContent = "Giá gốc phải là số, từ 0 đến 100,000,000!";
+                                        } else {
+                                            errorElement.textContent = ""; // Xóa thông báo lỗi nếu không có lỗi
+                                        }
+                                    });
+                                </script>
+
+                                <div class=" mb-3">
+                                    <label for="validationCustom282">Giá khuyến mãi (VNĐ)</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="validationCustom282" name="GiaKM" placeholder="Giá khuyến mãi" required maxlength="9" value="@Model.GiaKhuyenMai.ToString("N0")  ">
+                                        <div id="giaKMError" class="text-danger"></div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("validationCustom282").addEventListener("input", function () {
+                                        var giaKMInput = this.value;
+                                        var errorElement = document.getElementById("giaKMError");
+
+                                        if (!/^\d+$/.test(giaKMInput) || giaKMInput < 0 || giaKMInput > 100000000) {
+                                            errorElement.textContent = "Giá khuyến mãi phải là số, từ 0 đến 100,000,000!";
+                                        } else {
+                                            errorElement.textContent = ""; // Xóa thông báo lỗi nếu không có lỗi
+                                        }
+                                    });
+                                </script>
+
+                               
+
+                        </div>
+                        </div>
+                        <div class="text-right mt-3" style="display:flex;">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <a href="@Url.Action("Index")" class="btn btn-secondary" style="background-color: #FF5733; color: white; margin-left: 20px;">Trở về</a>
+                            <form asp-controller="AdminMenu" asp-action="Delete" asp-route-id="@Model.MaMon" method="post">
+                                <button type="button" class="btn btn-secondary ml-2" onclick="confirmDelete()" style="margin-left: 20px;">Xoá</button>
+                                <input type="submit" id="deleteButton" style="display: none;" />
+                            </form>
+                        </div>
+                   </form>
+                   
+                   
+                   
+
+                    <script>
+                        function confirmDelete() {
+                            if (confirm("Bạn có chắc chắn muốn xóa món ăn này?")) {
+                                document.getElementById("deleteButton").click();
+                            }
+                        }
+                    </script>
+
+                    
+
+
+
+            </div>
+               
+        </div>
+    </div>
+   
+  
+</div>
+</main>
+

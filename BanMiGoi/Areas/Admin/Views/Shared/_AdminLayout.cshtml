@@ -1,0 +1,332 @@
+﻿@using System.Text.Json;
+
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Admin</title>
+    <link rel="stylesheet" href="/css/bootstrap1.min.css" />
+    <link rel="stylesheet" href="/vendors/themefy_icon/themify-icons.css" />
+    <link rel="stylesheet" href="/vendors/niceselect/css/nice-select.css" />
+    <link rel="stylesheet" href="/vendors/owl_carousel/css/owl.carousel.css" />
+    <link rel="stylesheet" href="/vendors/gijgo/gijgo.min.css" />
+    <link rel="stylesheet" href="/vendors/font_awesome/css/all.min.css" />
+    <link rel="stylesheet" href="/vendors/tagsinput/tagsinput.css" />
+    <link rel="stylesheet" href="/vendors/datepicker/date-picker.css" />
+    <link rel="stylesheet" href="/vendors/vectormap-home/vectormap-2.0.2.css" />
+    <link rel="stylesheet" href="/vendors/scroll/scrollable.css" />
+    <link rel="stylesheet" href="/vendors/datatable/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="/vendors/datatable/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="/vendors/datatable/css/buttons.dataTables.min.css" />
+    <link rel="stylesheet" href="/vendors/text_editor/summernote-bs4.css" />
+    <link rel="stylesheet" href="/vendors/morris/morris.css">
+    <link rel="stylesheet" href="/vendors/material_icon/material-icons.css" />
+    <link rel="stylesheet" href="/css/metisMenu.css">
+    <link rel="stylesheet" href="/css/style1.css" />
+    <link rel="stylesheet" href="/css/colors/default.css" id="colorSkinCSS">
+
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
+"></script>
+
+
+
+        <!--***********************************************************-->
+    <!-- Favicons -->
+    <link href="~/assets/img/favicon.png" rel="icon">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: NiceAdmin
+    * Updated: Sep 18 2023 with Bootstrap v5.3.2
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+
+</head>
+<!-- ======= Header ======= -->
+<body>
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+ <div class="d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center">
+            <img src="~/img/Logo1.png" style="height: 65px;" alt="">
+            <span class="d-none d-lg-block" style="font-size:16px;">Admin</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+ <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+
+                @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+                @if (HttpContextAccessor.HttpContext.Session.GetString("TenDangNhap") != null) {
+                <li class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                            <img src="~/img/customers/1.png" alt="Profile" class="rounded-circle">
+                            <span class="d-none d-md-block dropdown-toggle ps-2">@HttpContextAccessor.HttpContext.Session.GetString("VaiTro"), @HttpContextAccessor.HttpContext.Session.GetString("TenDangNhap")</span>
+                </a><!-- End Profile Iamge Icon -->
+
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <!-- Your profile-related links go here -->
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <!-- Logout link -->
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="logout()">Đăng xuất</a>
+                            </li>
+                        </ul>
+            </li><!-- End Profile Nav -->
+            }
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+        @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+        @if (HttpContextAccessor.HttpContext.Session.GetString("TenDangNhap") != null && (HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "Admin"))
+        {
+            <ul class="sidebar-nav" id="sidebar-nav">
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class=" collapsed" style="color: #012970;  margin-bottom: 20px; margin-left: 25px;" href="/Admin/Home">
+                        <i class="bi bi-grid"></i>
+                        <span>Hệ thống</span>
+                    </a>
+                </li><!-- End Dashboard Nav -->
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="  collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/AdminMenu">
+                        <i class="bi bi-grid"></i>
+                        <span>Quản lý sản phẩm</span>
+                    </a>
+
+                </li><!-- End Dashboard Nav -->
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/AdminThongBao">
+                        <i class="bi bi-grid"></i>
+                        <span>Thông báo</span>
+
+                        @if (ViewBag.UnreadNotificationCount > 0)
+                        {
+                            <span class="badge bg-danger">@ViewBag.UnreadNotificationCount</span>
+                        }
+                    </a>
+                </li>
+
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="  collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/AdminDonHang">
+                        <i class="bi bi-grid"></i>
+                        <span>Quản lý đơn hàng</span>
+                    </a>
+                </li><!-- End Dashboard Nav -->
+
+                
+                
+
+               
+
+                @* <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="  collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/admin/adminnhanvien">
+                        <i class="bi bi-grid"></i>
+                        <span>quản lý nhân viên</span>
+                    </a>
+                </li><!-- end dashboard nav --> *@ 
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class=" collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-menu-button-wide"></i><span> Thống kê</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="/Admin/AdminThongKe">
+                                <i class="bi bi-circle"></i><span style="font-size: 18px;">Doanh thu</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!-- End Dashboard Nav -->
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="  collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/Chat">
+                        <i class="bi bi-grid"></i>
+                        <span>Tư vấn khách hàng</span>
+                    </a>
+                </li>
+               
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="collapsed" href="@Url.Action("Logout", "Account", new { area = "" })">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Đăng xuất</span>
+                    </a>
+                </li><!-- End Logout Page Nav -->
+
+
+            </ul>
+        }
+        @if(HttpContextAccessor.HttpContext.Session.GetString("TenDangNhap") != null && (HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "LeTan"))
+        {
+
+            <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+            <a class=" collapsed" style="color: #012970;  margin-bottom: 20px; margin-left: 25px;" href="/Admin/Home">
+                <i class="bi bi-grid"></i>
+                <span>Hệ thống</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+            <a class="collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/AdminThongBao">
+                <i class="bi bi-grid"></i>
+                <span>Thông báo</span>
+
+                @if (ViewBag.UnreadNotificationCount > 0)
+                {
+                    <span class="badge bg-danger">@ViewBag.UnreadNotificationCount</span>
+                }
+            </a>
+        </li>
+
+
+        <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+            <a class="  collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/AdminDonHang">
+                <i class="bi bi-grid"></i>
+                <span>Quản lý đơn hàng</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="  collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/Chat">
+                        <i class="bi bi-grid"></i>
+                        <span>Tư vấn khách hàng</span>
+                    </a>
+                </li>
+                
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="collapsed" href="@Url.Action("Logout", "Account", new { area = "" })">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Đăng xuất</span>
+                    </a>
+                </li><!-- End Logout Page Nav -->
+        </ul>
+        }
+        @if (HttpContextAccessor.HttpContext.Session.GetString("TenDangNhap") != null && (HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "ThuNgan"))
+        {
+            
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+            <a class=" collapsed" style="color: #012970;  margin-bottom: 20px; margin-left: 25px;" href="/Admin/Home">
+                <i class="bi bi-grid"></i>
+                <span>Hệ thống</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/AdminThongBao">
+                        <i class="bi bi-grid"></i>
+                        <span>Thông báo</span>
+
+                        @if (ViewBag.UnreadNotificationCount > 0)
+                        {
+                            <span class="badge bg-danger">@ViewBag.UnreadNotificationCount</span>
+                        }
+                    </a>
+                </li>
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="  collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/AdminDonHang">
+                        <i class="bi bi-grid"></i>
+                        <span>Quản lý đơn hàng</span>
+                    </a>
+                </li><!-- End Dashboard Nav -->
+
+               
+
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class=" collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-menu-button-wide"></i><span> Thống kê</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="/Admin/AdminThongKe">
+                                <i class="bi bi-circle"></i><span style="font-size: 18px;">Doanh thu</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!-- End Dashboard Nav -->
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="  collapsed" style="color: #012970; margin-bottom: 20px; margin-left: 25px;" href="/Admin/Chat">
+                        <i class="bi bi-grid"></i>
+                        <span>Tư vấn khách hàng</span>
+                    </a>
+                </li>
+               
+               
+                <li class="nav-item" style="margin-bottom: 20px; margin-left: 20px; font-size: 19px;">
+                    <a class="collapsed" href="@Url.Action("Logout", "Account", new { area = "" })">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Đăng xuất</span>
+                    </a>
+                </li><!-- End Logout Page Nav -->
+
+        </ul>
+        }
+    </aside><!-- End Sidebar-->
+
+@RenderBody()
+
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+    </footer>
+</body>
+</html>
