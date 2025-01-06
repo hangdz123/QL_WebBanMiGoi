@@ -50,7 +50,7 @@ namespace ThanhThoaiRestaurant.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
 
-            => optionsBuilder.UseSqlServer("Server=DESKTOP-KFO8VF1\\SQLEXPRESS2;Database=QuanLyNhaHang;Integrated Security=True");
+            => optionsBuilder.UseSqlServer("Server=db;Database=DoAn;User Id=sa;Password=123456aA@;TrustServerCertificate=True;");
 
 
 
