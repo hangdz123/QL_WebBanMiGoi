@@ -25,7 +25,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-builder.Services.AddDbContext<QuanLyNhaHangContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("ThanhThoaiRestaurant")));
+builder.Services.AddDbContext<QuanLyNhaHangContext>(option => option.UseMySql(builder.Configuration.GetConnectionString("ThanhThoaiRestaurant"),
+    new MySqlServerVersion(new Version(8, 0, 37))));
 
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 
