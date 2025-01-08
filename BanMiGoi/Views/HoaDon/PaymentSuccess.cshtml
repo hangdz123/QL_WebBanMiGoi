@@ -1,0 +1,159 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Kết quả thanh toán";
+}
+
+<div class="vnpay-container @(ViewBag.Message == "Giao dịch thanh toán thành công!" ? "success" : "")">
+    <div class="vnpay-logo">
+        <img src="https://stcd02206177151.cloud.edgevnpay.vn/assets/images/logo-icon/logo-primary.svg" alt="VNPAY">
+    </div>
+
+    <div class="vnpay-notification-circle">
+        <div class="vnpay-icon">@(ViewBag.Message == "Giao dịch thanh toán thành công!" ? "✓" : "!")</div>
+    </div>
+
+    <div class="vnpay-title">
+        <h2>Thông báo</h2>
+        <p>@ViewBag.Message</p>
+    </div>
+
+    <div class="vnpay-details">
+        @if (ViewBag.Message == "Giao dịch thanh toán thành công!")
+        {
+            <div class="vnpay-detail-row">
+                <span class="vnpay-detail-label">Mã đơn hàng</span>
+                <span>@ViewBag.OrderId</span>
+            </div>
+            <div class="vnpay-detail-row">
+                <span class="vnpay-detail-label">Số tiền</span>
+                <span>@String.Format("{0:N0}", Convert.ToDecimal(ViewBag.Amount) / 100) VND</span>
+            </div>
+        }
+        <div class="vnpay-detail-row">
+            <span class="vnpay-detail-label">Thời gian giao dịch</span>
+            <span>@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</span>
+        </div>
+    </div>
+
+    <div class="vnpay-contact-info">
+        <a href="tel:1900.5555.77" class="vnpay-contact-link">
+            <img src="https://cdn-icons-png.flaticon.com/512/455/455705.png" alt="Phone" style="width:16px;">
+            1900.5555.77
+        </a>
+        <a href="mailto:hotrovnpay@vnpay.vn" class="vnpay-contact-link">
+            <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Email" style="width:16px;">
+            hotrovnpay@vnpay.vn
+        </a>
+    </div>
+
+    <div class="vnpay-footer">
+        Phát triển bởi VNPAY © @DateTime.Now.Year
+    </div>
+</div>
+
+<style>
+    .vnpay-container {
+        max-width: 500px;
+        margin: 30px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .vnpay-container .vnpay-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .vnpay-container .vnpay-logo img {
+                height: 40px;
+            }
+
+        .vnpay-container .vnpay-notification-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #fff2f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+            .vnpay-container .vnpay-notification-circle .vnpay-icon {
+                color: #dc3545;
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+        .vnpay-container.success .vnpay-notification-circle {
+            background-color: #d4edda;
+        }
+
+            .vnpay-container.success .vnpay-notification-circle .vnpay-icon {
+                color: #28a745;
+            }
+
+        .vnpay-container .vnpay-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .vnpay-container .vnpay-title h2 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+        .vnpay-container .vnpay-details {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .vnpay-container .vnpay-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+            .vnpay-container .vnpay-detail-row:last-child {
+                border-bottom: none;
+            }
+
+        .vnpay-container .vnpay-detail-label {
+            color: #666;
+        }
+
+        .vnpay-container .vnpay-contact-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .vnpay-container .vnpay-contact-link {
+            display: flex;
+            align-items: center;
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+            .vnpay-container .vnpay-contact-link img {
+                margin-right: 8px;
+            }
+
+        .vnpay-container .vnpay-security-badges {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .vnpay-container .vnpay-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+</style>
