@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ThanhThoaiRestaurant.Migrations
 {
-    public partial class initial : Migration
+    public partial class initials : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -529,6 +529,8 @@ namespace ThanhThoaiRestaurant.Migrations
                 name: "ChiTietHD",
                 columns: table => new
                 {
+                    MaChiTietHd = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     MaMon = table.Column<int>(type: "int", fixedLength: true, maxLength: 10, nullable: false),
                     MaHD = table.Column<int>(type: "int", fixedLength: true, nullable: false),
                     SoLuongCT = table.Column<int>(type: "int", nullable: false),
@@ -540,7 +542,7 @@ namespace ThanhThoaiRestaurant.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CTHD", x => new { x.MaHD, x.MaMon });
+                    table.PrimaryKey("PK_CTHD", x => x.MaChiTietHd);
                     table.ForeignKey(
                         name: "fk_HD_CTHD",
                         column: x => x.MaHD,
@@ -590,6 +592,8 @@ namespace ThanhThoaiRestaurant.Migrations
                 name: "ChiTietDH",
                 columns: table => new
                 {
+                    MaChiTietDh = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     MaMon = table.Column<int>(type: "int", fixedLength: true, maxLength: 10, nullable: false),
                     MaDonHang = table.Column<int>(type: "int", fixedLength: true, maxLength: 10, nullable: false),
                     TenMonAnDH = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
@@ -600,7 +604,7 @@ namespace ThanhThoaiRestaurant.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DH", x => new { x.MaMon, x.MaDonHang });
+                    table.PrimaryKey("PK_DH", x => x.MaChiTietDh);
                     table.ForeignKey(
                         name: "fk_DH_CTDH",
                         column: x => x.MaDonHang,
@@ -644,6 +648,11 @@ namespace ThanhThoaiRestaurant.Migrations
                 column: "MaDonHang");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChiTietDH_MaMon",
+                table: "ChiTietDH",
+                column: "MaMon");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChiTietGH_MaGioHang",
                 table: "ChiTietGH",
                 column: "MaGioHang");
@@ -652,6 +661,11 @@ namespace ThanhThoaiRestaurant.Migrations
                 name: "IX_ChiTietGM_MaPhieuGM",
                 table: "ChiTietGM",
                 column: "MaPhieuGM");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHD_MaHD",
+                table: "ChiTietHD",
+                column: "MaHD");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChiTietHD_MaMon",
