@@ -220,6 +220,10 @@ app.MapControllerRoute(
         name: "api",
         pattern: "api/{controller=GiamGia}/{action=CheckCoupon}/{id?}");
 
+app.MapControllerRoute(
+    name: "PaymentSuccess",
+    pattern: "{controller=HoaDon}/{action=PaymentSuccess}/{id?}");
+
 
 app.MapRazorPages();
 
