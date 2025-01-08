@@ -355,6 +355,46 @@ namespace ThanhThoaiRestaurant.Controllers
 
 
         }
+        
+        [HttpGet]
+        public IActionResult PaymentSuccess()
+        {
+            // Lấy tham số trả về từ VNPAY
+            var vnpParams = HttpContext.Request.Query.ToDictionary(k => k.Key, v => v.Value.ToString());
+            string secureHash = vnpParams["vnp_SecureHash"]; // Chữ ký bảo mật
+        
+            // Loại bỏ vnp_SecureHash khỏi danh sách tham số
+            vnpParams.Remove("vnp_SecureHash");
+        
+            // Tạo lại chữ ký để kiểm tra
+            string hashSecret = "Y8PG2M6I7SE8KANJ3EIOHGXC5AMYVONJ"; // Thay bằng HashSecret của bạn
+            string rawData = string.Join("&", vnpParams.OrderBy(k => k.Key).Select(kv => $"{kv.Key}={kv.Value}"));
+            string computedHash = ComputeHmacSHA512(hashSecret, rawData);
+        
+            string status = vnpParams["vnp_TransactionStatus"];
+            if (status == "00")
+            {
+                // Giao dịch thành công
+                ViewBag.Message = "Giao dịch thanh toán thành công!";
+                ViewBag.OrderId = vnpParams["vnp_TxnRef"]; // Mã đơn hàng
+                ViewBag.Amount = vnpParams["vnp_Amount"]; // Số tiền
+            }
+            else
+            {
+                // Giao dịch thất bại
+                ViewBag.Message = "Giao dịch không thành công.";
+            }
+        
+            return View("PaymentSuccess"); // Trả về giao diện "PaymentReturn.cshtml"
+        }
+        private string ComputeHmacSHA512(string key, string data)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(System.Text.Encoding.UTF8.GetBytes(key)))
+            {
+                byte[] hashValue = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(data));
+                return BitConverter.ToString(hashValue).Replace("-", "").ToLower();
+            }
+        }
 
         public int GenerateRandomCustomerCode()
         {
