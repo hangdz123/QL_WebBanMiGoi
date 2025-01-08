@@ -11,7 +11,7 @@ using ThanhThoaiRestaurant.Models;
 namespace ThanhThoaiRestaurant.Migrations
 {
     [DbContext(typeof(QuanLyNhaHangContext))]
-    [Migration("20250108025552_initials")]
+    [Migration("20231109174318_TenCuaMigration1")]
     partial class initials
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
