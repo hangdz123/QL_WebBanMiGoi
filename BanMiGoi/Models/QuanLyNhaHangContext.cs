@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -47,11 +47,14 @@ namespace ThanhThoaiRestaurant.Models
         public virtual DbSet<DanhGia> DanhGias { get; set; } = null!;
 
 
-       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-	    optionsBuilder.UseMySql("server=mysql-2e58f8d7-testdatabase1712-c3b9.g.aivencloud.com;uid=avnadmin;pwd=AVNS_pFmYnNRAQgj3-MvyUCQ;database=TONE;Convert Zero Datetime=True;Character Set=utf8;Persist Security Info=True;port=15058",
-	        new MySqlServerVersion(new Version(8, 0, 37)));
-	}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseMySql("server=mysql-2e58f8d7-testdatabase1712-c3b9.g.aivencloud.com;uid=avnadmin;pwd=AVNS_pFmYnNRAQgj3-MvyUCQ;database=TONE;Convert Zero Datetime=True;Character Set=utf8;Persist Security Info=True;port=15058",
+                new MySqlServerVersion(new Version(8, 0, 37)));
+        }
+
+
+          
 
 
 
@@ -109,10 +112,14 @@ namespace ThanhThoaiRestaurant.Models
 
             modelBuilder.Entity<ChiTietDh>(entity =>
             {
-                entity.HasKey(e => new { e.MaMon, e.MaDonHang })
+                entity.HasKey(e => new { e.MaChiTietDh })
                     .HasName("PK_DH");
 
                 entity.ToTable("ChiTietDH");
+
+                entity.Property(e => e.MaChiTietDh)
+                    .HasColumnName("MaChiTietDh")
+                    .IsRequired();
 
                 entity.Property(e => e.MaMon)
                     .HasMaxLength(10)
@@ -226,10 +233,15 @@ namespace ThanhThoaiRestaurant.Models
 
             modelBuilder.Entity<ChiTietHd>(entity =>
             {
-                entity.HasKey(e => new { e.MaHd, e.MaMon })
+                entity.HasKey(e => new { e.MaChiTietHd })
                     .HasName("PK_CTHD");
 
                 entity.ToTable("ChiTietHD");
+
+                entity.Property(e => e.MaChiTietHd)
+                    .HasColumnName("MaChiTietHd")
+                    .IsRequired();
+
 
                 entity.Property(e => e.MaHd)
 
