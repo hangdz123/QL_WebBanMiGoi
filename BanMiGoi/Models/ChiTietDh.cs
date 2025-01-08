@@ -6,6 +6,7 @@ namespace ThanhThoaiRestaurant.Models
 {
     public partial class ChiTietDh
     {
+        public int MaChiTietDh { get; set; }
         public int MaMon { get; set; } 
         public int MaDonHang { get; set; } 
         public string TenMonAnDh { get; set; } = null!;
