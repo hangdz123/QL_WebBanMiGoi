@@ -11,8 +11,8 @@ using ThanhThoaiRestaurant.Models;
 namespace ThanhThoaiRestaurant.Migrations
 {
     [DbContext(typeof(QuanLyNhaHangContext))]
-    [Migration("20250106095024_initial")]
-    partial class initial
+    [Migration("20250108025552_initials")]
+    partial class initials
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,20 +42,25 @@ namespace ThanhThoaiRestaurant.Migrations
 
             modelBuilder.Entity("ThanhThoaiRestaurant.Models.ChiTietDh", b =>
                 {
-                    b.Property<int>("MaMon")
-                        .HasMaxLength(10)
+                    b.Property<int>("MaChiTietDh")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .IsFixedLength();
+                        .HasColumnName("MaChiTietDh");
+
+                    b.Property<string>("HinhAnhCt")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("HinhAnhCt");
 
                     b.Property<int>("MaDonHang")
                         .HasMaxLength(10)
                         .HasColumnType("int")
                         .IsFixedLength();
 
-                    b.Property<string>("HinhAnhCt")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("HinhAnhCt");
+                    b.Property<int>("MaMon")
+                        .HasMaxLength(10)
+                        .HasColumnType("int")
+                        .IsFixedLength();
 
                     b.Property<int>("SoLuongMmdh")
                         .HasColumnType("int")
@@ -66,10 +71,12 @@ namespace ThanhThoaiRestaurant.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("TenMonAnDH");
 
-                    b.HasKey("MaMon", "MaDonHang")
+                    b.HasKey("MaChiTietDh")
                         .HasName("PK_DH");
 
                     b.HasIndex("MaDonHang");
+
+                    b.HasIndex("MaMon");
 
                     b.ToTable("ChiTietDH", (string)null);
                 });
@@ -150,6 +157,15 @@ namespace ThanhThoaiRestaurant.Migrations
 
             modelBuilder.Entity("ThanhThoaiRestaurant.Models.ChiTietHd", b =>
                 {
+                    b.Property<int>("MaChiTietHd")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("MaChiTietHd");
+
+                    b.Property<string>("HinhAnhHd")
+                        .HasColumnType("longtext")
+                        .HasColumnName("HinhAnhHd");
+
                     b.Property<int>("MaHd")
                         .HasColumnType("int")
                         .HasColumnName("MaHD")
@@ -159,10 +175,6 @@ namespace ThanhThoaiRestaurant.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("int")
                         .IsFixedLength();
-
-                    b.Property<string>("HinhAnhHd")
-                        .HasColumnType("longtext")
-                        .HasColumnName("HinhAnhHd");
 
                     b.Property<int>("SoLuongCt")
                         .HasColumnType("int")
@@ -176,8 +188,10 @@ namespace ThanhThoaiRestaurant.Migrations
                         .HasColumnType("double")
                         .HasColumnName("ThanhTien");
 
-                    b.HasKey("MaHd", "MaMon")
+                    b.HasKey("MaChiTietHd")
                         .HasName("PK_CTHD");
+
+                    b.HasIndex("MaHd");
 
                     b.HasIndex("MaMon");
 
