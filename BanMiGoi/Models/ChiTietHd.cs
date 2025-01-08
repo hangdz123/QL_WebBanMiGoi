@@ -5,6 +5,7 @@ namespace ThanhThoaiRestaurant.Models
 {
     public partial class ChiTietHd
     {
+        public int MaChiTietHd {  get; set; }
         public int MaMon { get; set; } 
         public int MaHd { get; set; } 
         public int SoLuongCt { get; set; }
