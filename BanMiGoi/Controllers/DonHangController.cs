@@ -29,7 +29,8 @@ namespace ThanhThoaiRestaurant.Controllers
 
             if (tenDangNhap == null)
             {
-                return View("Error");
+                string script = "<script>alert('Đăng nhập để thực hiện chức năng.'); window.history.back();</script>";
+                return Content(script, "text/html", System.Text.Encoding.UTF8);
             }
 
             var khachHang = _context.KhachHangs.SingleOrDefault(kh => kh.TenDangNhap == tenDangNhap);
