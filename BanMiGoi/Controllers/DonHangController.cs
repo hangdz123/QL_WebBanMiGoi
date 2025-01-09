@@ -29,7 +29,7 @@ namespace ThanhThoaiRestaurant.Controllers
 
             if (tenDangNhap == null)
             {
-                string script = "<script>alert('Đăng nhập để thực hiện chức năng.'); window.history.back();</script>";
+                string script = "<script>alert('Đăng nhập để xem lịch sử mua hàng!'); window.history.back();</script>";
                 return Content(script, "text/html", System.Text.Encoding.UTF8);
             }
 
