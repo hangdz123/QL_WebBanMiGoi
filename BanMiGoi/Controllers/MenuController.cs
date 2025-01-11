@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ThanhThoaiRestaurant.Models;
 using System.Linq;
 using X.PagedList;
@@ -15,9 +15,7 @@ using System.Text.Json;
 namespace ThanhThoaiRestaurant.Controllers
 {
     public class ProductController : Controller
-    {
-        
-
+    {     
         public int PageSize = 9;
 		private readonly QuanLyNhaHangContext _context;
 		private readonly IWebHostEnvironment _webHostEnvironment;
@@ -46,28 +44,31 @@ namespace ThanhThoaiRestaurant.Controllers
         }
 
         [HttpPost]
-
-        public async Task<IActionResult> Search( string keywords, int productPage =1 )
+        public async Task<IActionResult> Search(string keywords, int productPage = 1)
         {
+            var query = string.IsNullOrWhiteSpace(keywords)
+                ? _context.MonAns 
+                : _context.MonAns.Where(p => p.TenMon.Contains(keywords)); 
+
+            int totalItems = query.Count();
+
             return View("Index",
                 new ProductListViewModel
                 {
-                    MonAns = _context.MonAns
-                    .Where(p=> p.TenMon.Contains(keywords))
-                    .Skip((productPage - 1) * PageSize)
-                    .Take(PageSize),
+                    MonAns = query
+                        .Skip((productPage - 1) * PageSize) 
+                        .Take(PageSize), 
                     PagingInfo = new PagingInfo
                     {
                         ItemPerPage = PageSize,
                         CurrentPage = productPage,
-                        TotalItems = _context.MonAns.Count()
+                        TotalItems = totalItems 
                     }
                 }
-                );
+            );
         }
 
 
-        
         public IActionResult Details(int id)
 		{
 			var menuItem = _context.MonAns
@@ -85,30 +86,24 @@ namespace ThanhThoaiRestaurant.Controllers
         [HttpPost]
         public IActionResult ThemVaoGioHang(int maMon, int soLuongMM)
         {
-            // Lấy món ăn từ CSDL dựa trên mã món
             var monAn = _context.MonAns.FirstOrDefault(m => m.MaMon == maMon);
 
             if (monAn == null)
             {
                 return Json(new { success = false, message = "Món ăn không tồn tại." });
             }
-
-            // Lấy giỏ hàng từ Session
             var gioHangJson = HttpContext.Session.GetString("GioHang");
             List<ChiTietGh> chiTietGhs;
 
             if (gioHangJson != null)
             {
-                // Nếu giỏ hàng đã tồn tại trong Session, lấy nó từ Session
                 chiTietGhs = JsonSerializer.Deserialize<List<ChiTietGh>>(gioHangJson);
             }
             else
             {
-                // Nếu giỏ hàng chưa tồn tại trong Session, khởi tạo nó
                 chiTietGhs = new List<ChiTietGh>();
             }
 
-            // Kiểm tra xem món ăn đã có trong giỏ hàng chưa
             var existingItem = chiTietGhs.FirstOrDefault(item => item.MaMon == maMon);
 
             if (existingItem != null)
@@ -118,7 +113,6 @@ namespace ThanhThoaiRestaurant.Controllers
             }
             else
             {
-                // Nếu món ăn chưa tồn tại trong giỏ hàng, thêm mới
                 chiTietGhs.Add(new ChiTietGh
                 {
                     MaMon = maMon,
@@ -155,59 +149,42 @@ namespace ThanhThoaiRestaurant.Controllers
         {
             // Sử dụng Include để kết nối thông tin của OCung
             var filterProducts = _context.MonAns
-                .Include(m => m.OCung)
-                .Include(m => m.RAM)
                 .Include (m => m.CPU)
-                .Include(m => m.ManHinh)
                 .ToList();
 
-            if (filter.PriceRange != null && filter.PriceRange.Count > 0 && !filter.PriceRange.Contains("all"))
-            {
-                List<PriceRange> priceRanges = new List<PriceRange>();
-                foreach(var range in filter.PriceRange)
-                {
-                    var value = range.Split("-").ToArray();
-                    PriceRange priceRange = new PriceRange();
-                    priceRange.Min = Int32.Parse(value[0]);
-                    priceRange.Max = Int32.Parse(value[1]);
-                    priceRanges.Add(priceRange);
-                }
-                filterProducts = filterProducts.Where(p=> priceRanges.Any(r=>p.GiaBan >= r.Min && p.GiaBan <= r.Max)).ToList();
-            }
+            
 
             if (filter.Category != null && filter.Category.Count > 0 && !filter.Category.Contains("all"))
             {
-                filterProducts = filterProducts.Where(p=>filter.Category.Contains(p.TenNhom)).ToList();
+                filterProducts = filterProducts.Where(p => filter.Category.Contains(p.TenNhom)).ToList();
             }
 
             if (filter.Hardware != null && filter.Hardware.Count > 0 && !filter.Hardware.Contains("all"))
-            { 
-
+            {
                 filterProducts = filterProducts
-                    .Where(p => p.OCung != null && p.OCung.DungLuong != null && filter.Hardware.Contains(p.OCung.DungLuong))
-                    .ToList();
-            
+                                        .Where(p => p.CPU != null
+                                                    && !string.IsNullOrEmpty(p.CPU.TenLoaiCPU)
+                                                    && filter.Hardware.Any(hw => hw.Trim().ToLower() == p.CPU.TenLoaiCPU.Trim().ToLower()))
+        .ToList();
             }
-
-
-            if (filter.Ram != null && filter.Ram.Count > 0 && !filter.Ram.Contains("all"))
+            // Sắp xếp dựa trên SortOption
+            if (!string.IsNullOrEmpty(filter.SortOption))
             {
-                filterProducts = filterProducts.Where(p => filter.Ram.Contains(p.RAM.DungLuongRam)).ToList();
+                switch (filter.SortOption)
+                {
+                    case "1": // Giá từ thấp đến cao
+                        filterProducts = filterProducts.OrderBy(p => p.GiaBan).ToList();
+                        break;
+                    case "2": // Giá từ cao xuống thấp
+                        filterProducts = filterProducts.OrderByDescending(p => p.GiaBan).ToList();
+                        break;
+                    default: // Mặc định hoặc Bán chạy
+                        filterProducts = filterProducts.OrderByDescending(p => p.SoLuongDaBan).ToList();
+                        break;
+                }
             }
-            if (filter.Cpu != null && filter.Cpu.Count > 0 && !filter.Cpu.Contains("all"))
-            {
-                filterProducts = filterProducts.Where(p => filter.Cpu.Contains(p.CPU.TenLoaiCPU)).ToList();
-            }
-            if (filter.Screen != null && filter.Screen.Count > 0 && !filter.Screen.Contains("all"))
-            {
-                filterProducts = filterProducts.Where(p => filter.Screen.Contains(p.ManHinh.KichThuoc)).ToList();
-            }
-
-            
-
             return PartialView("_ReturnProducts",filterProducts);
         }
-
 
 		[HttpPost]
 		public async Task<IActionResult> SubmitReview(int maMon, string content, int stars,
@@ -266,7 +243,6 @@ namespace ThanhThoaiRestaurant.Controllers
 			return RedirectToAction("Details", "Product", new { id = maMon });
 		}
 
-
 		public IActionResult DetailsReview(int id)
 		{
 			var menuItem = _context.DanhGias
@@ -280,7 +256,6 @@ namespace ThanhThoaiRestaurant.Controllers
 			ViewBag.MenuItem = menuItem; // Truyền dữ liệu món ăn vào ViewBag
 			return View(menuItem);
 		}
-
 
 		private async Task<string> SaveImage(IFormFile image, string uploadDir)
 		{
@@ -328,8 +303,6 @@ namespace ThanhThoaiRestaurant.Controllers
 		{
 			return fileName ?? null;
 		}
-
-
 
 		// Phương thức này sẽ tạo số ngẫu nhiên có 4 chữ số và chưa tồn tại trong CSDL
 		private int GenerateRandomMaDanhGia()
