@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ThanhThoaiRestaurant.Models; // Đảm bảo rằng bạn đã sử dụng namespace chứa các mô hình
 using X.PagedList;
 using System.Threading.Tasks;
@@ -128,7 +128,7 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
             if (HinhAnhFile != null)
             {
                 // Lưu tệp ảnh vào thư mục trên máy chủ
-                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "new1/img");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
@@ -148,7 +148,7 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
             if (HinhAnhFile1 != null)
             {
                 // Lưu tệp ảnh vào thư mục trên máy chủ
-                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "new1/img");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
@@ -168,7 +168,7 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
             if (HinhAnhFile2 != null)
             {
                 // Lưu tệp ảnh vào thư mục trên máy chủ
-                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "new1/img");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
@@ -187,7 +187,7 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
             if (HinhAnhFile3 != null)
             {
                 // Lưu tệp ảnh vào thư mục trên máy chủ
-                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "new1/img");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
@@ -269,7 +269,7 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
                 return NotFound(); // Trả về trang lỗi hoặc thông báo lỗi nếu món ăn không tồn tại
             }
 
-
+            var finTenNhom = _context.NhomMonAns.FirstOrDefault(x=>x.MaNhom == menuItem.MaNhom);
            
 
 
@@ -285,18 +285,18 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
                 existingMenuItem.MoTaDai = menuItem.MoTaDai;
                 
 
-                existingMenuItem.TenNhom = Request.Form["TenNhom"];
+                existingMenuItem.TenNhom = finTenNhom.TenNhom;
 
                 existingMenuItem.MaNhom = menuItem.MaNhom;
-                existingMenuItem.MaOC = menuItem.MaOC;
-                existingMenuItem.MaMH = menuItem.MaMH;
+                existingMenuItem.MaOC = 1;
+                existingMenuItem.MaMH = 1;
                 existingMenuItem.MaCPU = menuItem.MaCPU;
-                existingMenuItem.MaRam = menuItem.MaRam;
+                existingMenuItem.MaRam = 1;
 
             if (HinhAnhFile != null)
             {
                 // Lưu tệp ảnh vào thư mục trên máy chủ
-                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "new1/img");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
@@ -316,7 +316,7 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
             if (HinhAnhFile1 != null)
             {
                 // Lưu tệp ảnh vào thư mục trên máy chủ
-                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "new1/img");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
@@ -336,7 +336,7 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
             if (HinhAnhFile2 != null)
             {
                 // Lưu tệp ảnh vào thư mục trên máy chủ
-                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "new1/img");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
@@ -355,7 +355,7 @@ namespace ThanhThoaiRestaurant.Areas.Admin.Controllers
             if (HinhAnhFile3 != null)
             {
                 // Lưu tệp ảnh vào thư mục trên máy chủ
-                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "new1/img");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
