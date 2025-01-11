@@ -1,4 +1,4 @@
-﻿@using ThanhThoaiRestaurant.Models;
+@using ThanhThoaiRestaurant.Models;
 @model ProductListViewModel
 
 @{
@@ -261,7 +261,7 @@
                             </div>
 
                         <div class="input-checkbox">
-                            <input type="checkbox" val="DELL" id="category-1">
+                                <input type="checkbox" val="Omachi" id="category-1">
                             <label for="category-1">
                                 <span></span>
                                 Omachi
@@ -270,7 +270,7 @@
                         </div>
 
                         <div class="input-checkbox">
-                                <input type="checkbox" val="HP" id="category-2">
+                                <input type="checkbox" val="Kokomi" id="category-2">
                             <label for="category-2">
                                 <span></span>
                                 Kokomi
@@ -325,7 +325,7 @@
                             </div>
 
                         <div class="input-checkbox">
-                                <input type="checkbox" val="Corei3" id="cpu-1">
+                                <input type="checkbox" val="Thường" id="cpu-1">
                             <label for="cpu-1">
                                 <span></span>
                                 Mì Thường
@@ -334,7 +334,7 @@
                         </div>
 
                         <div class="input-checkbox">
-                                <input type="checkbox" val="Corei5" id="cpu-2">
+                                <input type="checkbox" val="Trộn" id="cpu-2">
                             <label for="cpu-2">
                                 <span></span>
                                 Mì Trộn
@@ -343,14 +343,21 @@
                         </div>
 
                         <div class="input-checkbox">
-                                <input type="checkbox" val="Corei7" id="cpu-3">
+                                <input type="checkbox" val="Tự Sôi" id="cpu-3">
                             <label for="cpu-3">
                                 <span></span>
                                 Lẩu Tự Sôi
 
                             </label>
                         </div>
+                            <div class="input-checkbox">
+                                <input type="checkbox" val="Xào" id="cpu-4">
+                                <label for="cpu-4">
+                                    <span></span>
+                                    Mì Xào
 
+                                </label>
+                            </div>
                         
                     </div>
                 </div>
@@ -390,7 +397,7 @@
                             <select class="input-select">
                                 <option value="0">Bán chạy</option>
                                 <option value="1">Giá từ thấp đến cao</option>
-                                <option value="1">Giá từ cao xuống thấp</option>
+                                <option value="2">Giá từ cao xuống thấp</option>
                             </select>
                         </label>
 
@@ -643,7 +650,7 @@
             textCenterDiv.classList.add("text-center");
             const ul = document.createElement("ul");
             ul.classList.add("pagination", "paging-info");
-            
+
 
             // Add pagination links
             for (var i = 1; i <= TotalPage; i++) {
@@ -651,7 +658,7 @@
                 li.classList.add("page-item");
                 var a = document.createElement("a");
                 a.classList.add("page-link");
-                a.setAttribute("href", "/Product/Index?productPage=" + i );
+                a.setAttribute("href", "/Product/Index?productPage=" + i);
                 a.textContent = i;
                 a.addEventListener('click', handlePageLinkClick)
                 li.appendChild(a);
@@ -695,7 +702,7 @@
 
             // Append new pagination elements to the existing HTML structure
             document.getElementById("store").appendChild(nav);
-            nav.style.textAlign= "center";
+            nav.style.textAlign = "center";
             ShowPage(1);
 
             var startItem = 1;
@@ -711,7 +718,7 @@
             additionalPagingInfo.style.fontSize = "13px";
             additionalPagingInfo.style.color = "red";
             additionalPagingInfo.style.textAlign = "center";
-            additionalPagingInfo.textContent = "Trang" + PageNumber  + " / " + TotalPage ;
+            additionalPagingInfo.textContent = "Trang" + PageNumber + " / " + TotalPage;
             textCenterDiv.appendChild(additionalPagingInfo);
             var existingPagingInfo = document.getElementById("existing-paging-info");
             if (existingPagingInfo) {
@@ -726,6 +733,7 @@
             console.log("Lỗi", error);
         });
     });
+
 
         function handlePageLinkClick(event){
         event.preventDefault();
@@ -785,5 +793,52 @@
 
             return queryString;
         }
+    document.querySelector(".store-sort .input-select").addEventListener("change", function () {
+        // Lấy giá trị sắp xếp từ dropdown
+        var sortOption = this.value;
+
+        // Thu thập thông tin bộ lọc từ các checkbox
+        var category = getSeclectCheckboxs("category-filtered-form");
+        var hardware = getSeclectCheckboxs("hardware-filtered-form");
+        var ram = getSeclectCheckboxs("ram-filtered-form");
+        var cpu = getSeclectCheckboxs("cpu-filtered-form");
+        var screen = getSeclectCheckboxs("screen-filtered-form");
+        var priceRange = getSeclectCheckboxs("price-filtered-form");
+
+        // Chuẩn bị object dữ liệu gửi lên server
+        var data = {
+            Category: category,
+            Hardware: hardware,
+            Ram: ram,
+            Cpu: cpu,
+            Screen: screen,
+            PriceRange: priceRange,
+            SortOption: sortOption // Truyền giá trị sắp xếp
+        };
+
+        // Gửi yêu cầu qua API
+        fetch("/Product/GetFilterProducts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error("Có lỗi xảy ra khi xử lý yêu cầu");
+                }
+            })
+            .then(function (results) {
+                // Hiển thị sản phẩm đã lọc vào giao diện
+                $("#filter-product").html(results);
+            })
+            .catch(function (error) {
+                console.log("Lỗi:", error);
+            });
+    });
+
 
     </script>
