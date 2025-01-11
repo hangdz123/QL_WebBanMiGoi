@@ -1,4 +1,4 @@
-﻿@using System.Text.Json;
+@using System.Text.Json;
 
 
 
@@ -141,41 +141,42 @@
                     @if (HttpContextAccessor.HttpContext.Session.GetString("IsLoggedIn") == "true" && (HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "Admin" || HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "LeTan" || HttpContextAccessor.HttpContext.Session.GetString("VaiTro") == "ThuNgan"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link " href="/Admin">Admin</a>
+                            <a class="nav-link " href="https://ql-webbanmigoi.onrender.com/Admin">Admin</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/Home">Trang chủ <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="https://ql-webbanmigoi.onrender.com/Home">Trang chủ <span class="sr-only">(current)</span></a>
                         </li>
 
                        
 
                         <li class="nav-item">
-                            <a class="nav-link" href="/Product">Mua sắm</a>
+                            <a class="nav-link" href="https://ql-webbanmigoi.onrender.com/Product">Mua sắm</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/DonHang">Lịch sử mua hàng</a>
+                            <a class="nav-link" href="https://ql-webbanmigoi.onrender.com/DonHang">Lịch sử mua hàng</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="Home/Chat">Chat <i style="font-size:20px; color: yellow;" class="fa fa-comments-o" aria-hidden="true"></i></a>
+                            <a class="nav-link" href="https://ql-webbanmigoi.onrender.com/Home/Chat">Chat <i style="font-size:20px; color: yellow;" class="fa fa-comments-o" aria-hidden="true"></i></a>
                         </li>
                     }
                     else
                     {
                         <li class="nav-item">
-                            <a class="nav-link" href="/Home">Trang chủ <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="https://ql-webbanmigoi.onrender.com/Home">Trang chủ <span class="sr-only">(current)</span></a>
                         </li>
 
                        
 
                         <li class="nav-item">
-                            <a class="nav-link" href="/Product">Mua sắm</a>
+                            <a class="nav-link" href="https://ql-webbanmigoi.onrender.com/Product">Mua sắm</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/DonHang">Lịch sử mua hàng</a>
+                            <a class="nav-link" href="https://ql-webbanmigoi.onrender.com/DonHang">Lịch sử mua hàng</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="Home/Chat">Chat <i style="font-size:20px; color: yellow;" 
-                                class="fa fa-comments-o" aria-hidden="true"></i></a>
+                            <a class="nav-link" href="https://ql-webbanmigoi.onrender.com/Home/Chat">
+                                Chat <i style="font-size:20px; color: yellow;"
+                                        class="fa fa-comments-o" aria-hidden="true"></i></a>
                         </li>
 
                     }
